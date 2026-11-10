@@ -316,7 +316,7 @@ Memorando de 1 página.</button>
       <button type="button" data-r="world" aria-pressed="false" data-pt="Mundo" data-en="World">Mundo</button>
       <button type="button" data-r="br" aria-pressed="true" data-pt="Brasil" data-en="Brazil">Brasil</button>
     </div>
-    <div class="valor" id="valor">R$29,90</div>
+    <div class="valor" id="valor">R$29,20</div>
     <ul class="inclui">
       <li data-pt="Pagamento único, sem assinatura" data-en="One payment, no subscription">Pagamento único, sem assinatura</li>
       <li data-pt="Skills novas toda semana, incluídas" data-en="New skills every week, included">Skills novas toda semana, incluídas</li>
@@ -540,7 +540,7 @@ function mostrarFormato(f){
 document.querySelectorAll(".file .sf-botao").forEach(b=>b.addEventListener("click",()=>mostrarFormato(b.dataset.f)));
 
 /* ---------- preço por região ---------- */
-const PRECOS={uk:"£4.99",eu:"€5.99",world:"$5.99",br:"R$29,90"};
+const PRECOS={uk:"£4.99",eu:"€5.89",world:"$5.89",br:"R$29,20"};
 let regiao=null;
 function mostrarPreco(r){regiao=r;$("valor").textContent=PRECOS[r];document.querySelectorAll(".regioes button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.r===r));}
 document.querySelectorAll(".regioes button").forEach(b=>b.addEventListener("click",()=>mostrarPreco(b.dataset.r)));
