@@ -1,0 +1,24 @@
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Suporte · Skillarium</title><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Manrope:wght@400;500&display=swap"><style>:root{--bg:#08131d;--bg-2:#102330;--line:#26404c;--fg:#eef3f4;--muted:#a8c0ca;--accent:#dbc293;color-scheme:dark}
+@media (prefers-color-scheme:light){:root{--bg:#ece3d3;--bg-2:#f6f0e4;--line:#d8ccb6;--fg:#2c2621;--muted:#6c6152;--accent:#8a6935;color-scheme:light}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:400 16.5px/1.7 "Manrope",-apple-system,"Segoe UI",sans-serif}
+.wrap{max-width:760px;margin:0 auto;padding:56px max(16px,env(safe-area-inset-left,0px)) 80px max(16px,env(safe-area-inset-right,0px))}
+h1,h2{font-family:"Instrument Serif",Georgia,serif;font-weight:400;margin:0}h1{font-size:clamp(40px,7vw,64px);line-height:1.05;margin-bottom:8px}h2{font-size:28px;margin-top:36px}
+p,li{color:var(--muted)}a{color:var(--accent)}.eyebrow{font:500 11.5px ui-monospace,Menlo,monospace;letter-spacing:.3em;text-transform:uppercase;color:var(--accent)}
+.lang{float:right;display:flex;gap:4px}.lang button{border:1px solid var(--line);background:none;color:var(--muted);border-radius:999px;padding:5px 11px;cursor:pointer}
+.lang button[aria-pressed=true]{background:var(--accent);color:var(--bg)}[hidden]{display:none!important}code{color:var(--fg)}</style></head>
+<body><div class="wrap"><div class="lang"><button data-v="pt" aria-pressed="true">PT</button><button data-v="en" aria-pressed="false">EN</button></div>
+<p class="eyebrow"><a href="index.html" style="text-decoration:none">Skillarium</a></p>
+<div data-l="pt"><h1>Suporte</h1><p>Respostas rápidas para as dúvidas mais comuns. Respondemos e-mails em até 2 dias úteis.</p>
+<h2>Como uso uma skill?</h2><p>1. Toque em <b>Copiar skill</b>. 2. Abra o Claude, o ChatGPT ou o Gemini e comece uma conversa nova. 3. Cole e escreva logo abaixo o que você precisa.</p>
+<h2>Como instalo uma skill no Claude?</h2><p>Na tela da skill, escolha <b>Instalar no Claude</b> e salve o arquivo .zip. No Claude, pelo computador ou navegador: Configurações → Capacidades → Skills → Enviar skill. (O app do Claude para iPhone ainda não instala skills.)</p>
+<h2>Pago de novo pelas skills novas?</h2><p>Não. Você paga uma vez e recebe as novas toda semana.</p>
+<h2>O que quer dizer "Testada"?</h2><p>A skill foi revisada e rodou numa tarefa de exemplo, com a resposta conferida. "Aprovada por especialista" quer dizer que uma pessoa também testou num caso real.</p>
+<h2>Reembolso</h2><p>Reembolsos da App Store são feitos pela Apple, em <a href="https://reportaproblem.apple.com">reportaproblem.apple.com</a>.</p>
+<h2>Fale conosco</h2><p>E-mail: <code>suporte@[seu-dominio]</code>. Diga o modelo do seu aparelho e o que aconteceu.</p></div><div data-l="en" hidden><h1>Support</h1><p>Quick answers to the most common questions. We reply to emails within 2 working days.</p>
+<h2>How do I use a skill?</h2><p>1. Tap <b>Copy skill</b>. 2. Open Claude, ChatGPT or Gemini and start a new chat. 3. Paste it and write what you need right below.</p>
+<h2>How do I install a skill in Claude?</h2><p>On the skill screen choose <b>Install in Claude</b> and save the .zip file. In Claude on desktop or web: Settings → Capabilities → Skills → Upload skill. (The Claude iPhone app can't install skills yet.)</p>
+<h2>Do I pay again for new skills?</h2><p>No. You pay once and get new ones every week.</p>
+<h2>What does "Tested" mean?</h2><p>The skill was reviewed and run on a sample task, and the answer was checked. "Expert approved" means a person also tested it on a real case.</p>
+<h2>Refunds</h2><p>App Store refunds are handled by Apple at <a href="https://reportaproblem.apple.com">reportaproblem.apple.com</a>.</p>
+<h2>Contact us</h2><p>Email: <code>support@[your-domain]</code>. Tell us your device model and what happened.</p></div></div><script>const t=l=>{document.querySelectorAll('[data-l]').forEach(e=>e.hidden=e.dataset.l!==l);document.querySelectorAll('.lang button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.v===l)));document.documentElement.lang=l==='pt'?'pt-BR':'en';};document.querySelectorAll('.lang button').forEach(b=>b.onclick=()=>t(b.dataset.v));t((navigator.language||'pt').startsWith('pt')?'pt':'en');</script></body></html>
