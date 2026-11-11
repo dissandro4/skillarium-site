@@ -1,4 +1,4 @@
-<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="description" content="Skillarium: skills de IA testadas, prontas para colar na sua IA. Tested AI skills, ready to paste into your AI.">
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="description" content="Skillarium: skills de IA testadas, prontas para colar na sua IA. Tested AI skills, ready to paste into your AI."><meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
 <title>Skillarium</title>
 <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=3">
 <link rel="icon" type="image/png" sizes="192x192" href="icone-192.png">
@@ -183,6 +183,7 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:16px 28px;align-items:center}
 .chat-chips{display:flex;flex-wrap:wrap;gap:8px;padding:0 16px 10px}.chat-chip{border:1px solid var(--line);background:var(--panel);color:var(--fg);font:400 13.5px var(--body);padding:9px 13px;border-radius:999px;cursor:pointer;min-height:40px}
 .chat-form{display:flex;gap:8px;padding:10px 12px;border-top:1px solid var(--line)}.chat-form input{flex:1;min-width:0;font:400 16px var(--body);color:var(--fg);background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:12px 14px}
 .chat-env{border:0;background:var(--accent);color:var(--on-accent);font:500 15px var(--body);padding:0 16px;border-radius:14px;cursor:pointer;min-height:44px}.chat-nota{margin:0;padding:0 16px 12px;font-size:12px;color:var(--muted)}.chat-pessoa{align-self:flex-start;color:var(--accent);padding:6px 2px}
+/*atualizar*/#nova-versao{position:fixed;left:50%;transform:translateX(-50%);bottom:max(76px,calc(env(safe-area-inset-bottom) + 76px));z-index:60;display:flex;gap:12px;align-items:center;background:var(--bg-2);color:var(--fg);border:1px solid var(--accent);border-radius:999px;padding:10px 12px 10px 18px;box-shadow:0 12px 36px rgba(0,0,0,.35);font-size:14px}#nova-versao button{border:0;background:var(--accent);color:var(--on-accent);font:500 14px var(--body);padding:10px 16px;border-radius:999px;cursor:pointer;min-height:40px}
 </style>
 
 <canvas id="ceu" aria-hidden="true"></canvas>
@@ -396,6 +397,7 @@ Memorando de 1 página.</button>
 <footer><div class="wrap">
   <span style="font:400 22px var(--display);color:var(--fg)">Skillarium</span>
   <a href="suporte.html" data-pt="Suporte" data-en="Support">Suporte</a>
+  <a href="#" id="atualizar" data-pt="Atualizar" data-en="Refresh">Atualizar</a>
   <a href="privacidade.html" data-pt="Privacidade" data-en="Privacy">Privacidade</a>
   <span data-pt="O app não coleta dados." data-en="The app collects no data.">O app não coleta dados.</span>
 </div></footer>
@@ -622,6 +624,7 @@ let salvo=null;try{salvo=localStorage.getItem("lang")}catch(e){}
 setLang(salvo||((navigator.language||"pt").startsWith("pt")?"pt":"en"));
 </script>
 
+<!--VERSAO--><script>window.SKILLARIUM_VERSAO="20261111-222358";</script><!--/VERSAO-->
 <!--FAQ-DADOS-->
 <script>
 // Skillarium — cérebro de respostas (11/nov/2026). Acha, no FAQ, a melhor resposta para uma pergunta escrita do jeito da pessoa,
@@ -793,6 +796,31 @@ const FAQ_PUBLICO=[{"cat": ["Começando", "Getting started"], "publicar": true, 
                                              : (L === 'en' ? 'Founder spots are closed. Thank you to everyone who believed early.' : 'As vagas de fundador se encerraram. Obrigado a quem acreditou no início.'); };
   fetch(url, { cache: 'no-store' }).then((r) => r.json()).then((d) => { dados = d; pinta(); }).catch(() => {});
   ['btn-pt', 'btn-en'].forEach((id) => { const b = document.getElementById(id); b && b.addEventListener('click', () => setTimeout(pinta, 0)); });
+})();
+
+// Atualização automática do site (para quem guardou o ícone na tela do celular). Compara a versão desta página com a versão publicada
+// (versao.json, sempre buscada sem cache). Se mudou, recarrega sozinho UMA vez por versão e mostra um aviso com botão. O link "Atualizar" do rodapé força isso na hora.
+(function () {
+  const atual = window.SKILLARIUM_VERSAO, base = location.pathname.replace(/[^/]*$/, '');
+  const pt = () => !(document.getElementById('btn-en') && document.getElementById('btn-en').getAttribute('aria-pressed') === 'true');
+  function recarregar(v) { location.replace(base + '?v=' + encodeURIComponent(v || Date.now()) + location.hash); }   // endereço novo = o celular busca a página de novo
+  const link = document.getElementById('atualizar');
+  if (link) link.addEventListener('click', (e) => { e.preventDefault(); recarregar(Date.now()); });
+  if (!atual || !/github\.io$/.test(location.hostname)) return;   // só no site público (no link do claude.ai não se aplica)
+  function aviso(v) {
+    if (document.getElementById('nova-versao')) return;
+    const d = document.createElement('div'); d.id = 'nova-versao'; d.setAttribute('role', 'status');
+    const t = document.createElement('span'); t.textContent = pt() ? 'Há uma versão nova do site.' : 'A new version of the site is available.';
+    const b = document.createElement('button'); b.type = 'button'; b.textContent = pt() ? 'Atualizar agora' : 'Update now'; b.onclick = () => recarregar(v);
+    d.append(t, b); document.body.append(d);
+  }
+  async function checar() {
+    try {
+      const r = await fetch(base + 'versao.json?x=' + Date.now(), { cache: 'no-store' }); if (!r.ok) return; const j = await r.json();
+      if (j.v && j.v !== atual) { if (!sessionStorage.getItem('rec-' + j.v)) { sessionStorage.setItem('rec-' + j.v, '1'); recarregar(j.v); } else aviso(j.v); }
+    } catch (e) { /* sem internet: segue com a versão que está aqui */ }
+  }
+  checar(); document.addEventListener('visibilitychange', () => { if (!document.hidden) checar(); }); setInterval(checar, 300000);
 })();
 
 </script>

@@ -1,8 +1,8 @@
 {
  "name": "Skillarium",
  "short_name": "Skillarium",
- "start_url": ".",
- "display": "standalone",
+ "start_url": "./?origem=icone",
+ "display": "browser",
  "background_color": "#08131d",
  "theme_color": "#08131d",
  "icons": [
@@ -24,5 +24,6 @@
    "type": "image/png",
    "purpose": "maskable"
   }
- ]
+ ],
+ "scope": "./"
 }
