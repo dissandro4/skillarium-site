@@ -157,6 +157,30 @@ img,svg,video,canvas{max-width:100%}
 
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:28px}
 .item{display:grid;gap:8px;min-width:0}
+/* Como o MCP funciona: diagrama interativo */
+.mcp-demo{margin:28px 0 8px;padding:22px clamp(14px,3vw,28px);border:1px solid var(--line);border-radius:18px;background:var(--panel);display:grid;gap:18px}
+.mcp-passos{display:flex;flex-wrap:wrap;gap:8px}
+.mcp-passos button,.mcp-tools button,.mcp-play{font:600 .85rem var(--body);color:var(--fg);background:transparent;border:1px solid var(--line);border-radius:999px;padding:8px 14px;cursor:pointer;min-height:40px}
+.mcp-passos button[aria-pressed=true],.mcp-tools button[aria-pressed=true]{background:var(--accent);color:var(--on-accent);border-color:var(--accent)}
+.mcp-play{border-color:var(--accent);color:var(--accent)}
+.mcp-palco{position:relative;display:grid;grid-template-columns:1fr 1fr 1fr;align-items:center;gap:0;padding:26px 0 18px}
+.mcp-no{justify-self:center;text-align:center;padding:14px 10px;border:1px solid var(--line);border-radius:14px;min-width:min(100%,120px);background:var(--bg-2);transition:border-color .3s,box-shadow .3s,transform .3s}
+.mcp-no b{display:block;font:400 1.25rem var(--display)}
+.mcp-no small{color:var(--muted);font-size:.74rem}
+.mcp-palco[data-passo="1"] .n-a,.mcp-palco[data-passo="4"] .n-a,.mcp-palco[data-passo="2"] .n-c,.mcp-palco[data-passo="3"] .n-c,
+.mcp-palco[data-passo="1"] .n-b,.mcp-palco[data-passo="2"] .n-b,.mcp-palco[data-passo="3"] .n-b,.mcp-palco[data-passo="4"] .n-b{border-color:var(--accent)}
+.mcp-palco[data-passo="1"] .n-a,.mcp-palco[data-passo="2"] .n-b,.mcp-palco[data-passo="3"] .n-c,.mcp-palco[data-passo="4"] .n-a{box-shadow:0 0 0 3px var(--soft);transform:translateY(-2px)}
+.mcp-fio{position:absolute;top:50%;left:16.6%;right:16.6%;height:0;border-top:1px dashed var(--line);pointer-events:none}
+.mcp-pacote{position:absolute;top:50%;left:16.6%;width:14px;height:14px;margin:-7px 0 0 -7px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 5px var(--soft);pointer-events:none;opacity:0}
+.mcp-palco[data-passo] .mcp-pacote{opacity:1}
+.mcp-legenda{min-height:3.2em;margin:0;font-size:1rem;line-height:1.5}
+.mcp-legenda b{font-family:var(--mono);font-size:.82rem;color:var(--accent)}
+.mcp-tools{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.mcp-tools span{font-size:.8rem;color:var(--muted)}
+.mcp-dica{margin:0;color:var(--muted);font-size:.9rem;min-height:1.4em}
+@media (max-width:520px){.mcp-no{padding:10px 6px;min-width:0}.mcp-no b{font-size:1.05rem}.mcp-no small{display:none}}
+@media (prefers-reduced-motion:reduce){.mcp-no{transition:none}}
+
 
 .preco{max-width:560px;margin-inline:auto;padding:clamp(24px,4vw,40px);display:grid;gap:20px;justify-items:center;text-align:center}
 .regioes{display:flex;flex-wrap:wrap;justify-content:center;gap:4px;border:1px solid var(--line);border-radius:999px;padding:4px}
@@ -308,6 +332,33 @@ Memorando de 1 página.</button>
     <h2 data-pt="O Skillarium é um MCP." data-en="Skillarium is an MCP server.">O Skillarium é um MCP.</h2>
     <p class="lede" data-pt="MCP (Model Context Protocol) é a tomada padrão das IAs: qualquer IA que aceita MCP passa a usar as ferramentas de um programa que oferece MCP. Ligue o Skillarium uma vez e, a cada etapa do seu projeto, a sua IA busca a skill testada certa, aplica e diz qual usou. Tudo roda no seu computador." data-en="MCP (Model Context Protocol) is the standard plug for AIs: any AI that supports MCP can use the tools of a program that offers MCP. Connect Skillarium once and, at each step of your project, your AI finds the right tested skill, applies it and tells you which one it used. Everything runs on your computer.">MCP (Model Context Protocol) é a tomada padrão das IAs: qualquer IA que aceita MCP passa a usar as ferramentas de um programa que oferece MCP. Ligue o Skillarium uma vez e, a cada etapa do seu projeto, a sua IA busca a skill testada certa, aplica e diz qual usou. Tudo roda no seu computador.</p>
   </div>
+  <div class="mcp-demo" id="mcp-demo">
+    <div class="mcp-passos" role="group" aria-label="Passo a passo / Step by step">
+      <button type="button" data-p="1" data-pt="1 · Você pede" data-en="1 · You ask">1 · Você pede</button>
+      <button type="button" data-p="2" data-pt="2 · Busca" data-en="2 · Search">2 · Busca</button>
+      <button type="button" data-p="3" data-pt="3 · Skill testada" data-en="3 · Tested skill">3 · Skill testada</button>
+      <button type="button" data-p="4" data-pt="4 · Resultado" data-en="4 · Result">4 · Resultado</button>
+      <button type="button" class="mcp-play" id="mcp-play" data-pt="▶ Ver sozinho" data-en="▶ Play it">▶ Ver sozinho</button>
+    </div>
+    <div class="mcp-palco" id="mcp-palco">
+      <div class="mcp-fio"></div><div class="mcp-pacote" id="mcp-pacote"></div>
+      <div class="mcp-no n-a"><b data-pt="Sua IA" data-en="Your AI">Sua IA</b><small data-pt="Claude, Codex, Gemini" data-en="Claude, Codex, Gemini">Claude, Codex, Gemini</small></div>
+      <div class="mcp-no n-b"><b>MCP</b><small data-pt="a tomada padrão" data-en="the standard plug">a tomada padrão</small></div>
+      <div class="mcp-no n-c"><b>Skillarium</b><small data-pt="só skills testadas" data-en="tested skills only">só skills testadas</small></div>
+    </div>
+    <p class="mcp-legenda" id="mcp-legenda" aria-live="polite">
+      <span data-l="0" data-pt="Toque num passo para ver o caminho do seu pedido." data-en="Tap a step to follow your request.">Toque num passo para ver o caminho do seu pedido.</span>
+      <span data-l="1" hidden data-pt="Você escreve, por exemplo, “monte uma página de preços”. A IA decide pedir ajuda." data-en="You write, for example, “build a pricing page”. The AI decides to ask for help.">Você escreve, por exemplo, “monte uma página de preços”. A IA decide pedir ajuda.</span>
+      <span data-l="2" hidden data-pt="Pela tomada MCP, a IA chama a ferramenta buscar_skills. Nada sai do seu computador." data-en="Through the MCP plug, the AI calls the buscar_skills tool. Nothing leaves your computer.">Pela tomada MCP, a IA chama a ferramenta buscar_skills. Nada sai do seu computador.</span>
+      <span data-l="3" hidden data-pt="O Skillarium devolve só a skill testada certa (ler_skill), com o passo a passo." data-en="Skillarium returns only the right tested skill (ler_skill), with its steps.">O Skillarium devolve só a skill testada certa (ler_skill), com o passo a passo.</span>
+      <span data-l="4" hidden data-pt="A IA aplica a skill e conta a você qual usou. Você confere." data-en="The AI applies the skill and tells you which one it used. You can check.">A IA aplica a skill e conta a você qual usou. Você confere.</span>
+    </p>
+    <div class="mcp-tools" role="group" aria-label="Ferramentas / Tools">
+      <span data-pt="As 4 ferramentas:" data-en="The 4 tools:">As 4 ferramentas:</span>
+      <button type="button" data-t="0">buscar_skills</button><button type="button" data-t="1">ler_skill</button><button type="button" data-t="2">listar_categorias</button><button type="button" data-t="3">novidades_do_farejador</button>
+    </div>
+    <p class="mcp-dica" id="mcp-dica" aria-live="polite"></p>
+  </div>
   <div class="grid">
     <div class="item"><h3 data-pt="4 ferramentas para a sua IA" data-en="4 tools for your AI">4 ferramentas para a sua IA</h3><p class="muted" data-pt="Sherlock (buscar skills), ler skill, listar categorias e novidades do Farejador. Só passam skills testadas." data-en="Sherlock (find skills), read skill, list categories and Scout news. Tested skills only.">Sherlock (buscar skills), ler skill, listar categorias e novidades do Farejador. Só passam skills testadas.</p></div>
     <div class="item"><h3 data-pt="O Farejador também é MCP" data-en="The Scout is MCP too">O Farejador também é MCP</h3><p class="muted" data-pt="É a ferramenta de curadoria do Skillarium: procura skills e ideias novas no GitHub, no YouTube, em fóruns e sites, confere a licença e manda para teste. A sua IA vê o que ele trouxe em “novidades do Farejador”." data-en="It is Skillarium's curation tool: it looks for new skills and ideas on GitHub, YouTube, forums and websites, checks the licence and sends them for testing. Your AI sees what it found in “Scout news”.">É a ferramenta de curadoria do Skillarium: procura skills e ideias novas no GitHub, no YouTube, em fóruns e sites, confere a licença e manda para teste. A sua IA vê o que ele trouxe em “novidades do Farejador”.</p></div>
@@ -406,6 +457,36 @@ const $=id=>document.getElementById(id);
 let lang="pt";
 const REDUZ=matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+
+/* MCP interativo */
+(function(){
+  const palco=document.getElementById("mcp-palco");if(!palco)return;
+  const pac=document.getElementById("mcp-pacote"),leg=document.getElementById("mcp-legenda"),play=document.getElementById("mcp-play"),dica=document.getElementById("mcp-dica");
+  const botoes=[...document.querySelectorAll("#mcp-demo .mcp-passos button[data-p]")],tools=[...document.querySelectorAll("#mcp-demo .mcp-tools button")];
+  const rota={1:[0,50],2:[50,100],3:[100,50],4:[50,0]};let timer=null;
+  const DICAS={pt:["Procura a skill certa para a etapa do seu projeto.","Abre a skill escolhida para a IA seguir.","Mostra os grupos de skills disponíveis.","Mostra o que o Farejador trouxe de novo (ainda em teste)."],en:["Finds the right skill for your project step.","Opens the chosen skill for the AI to follow.","Shows the available skill groups.","Shows what the Scout found lately (still in testing)."]};
+  const idioma=()=>document.documentElement.lang&&document.documentElement.lang.toLowerCase().startsWith("en")?"en":"pt";
+  function passo(n){
+    palco.dataset.passo=n;
+    botoes.forEach(b=>b.setAttribute("aria-pressed",String(+b.dataset.p===n)));
+    leg.querySelectorAll("span").forEach(x=>{x.hidden=+x.dataset.l!==n;});
+    const [a,b]=rota[n],u=v=>`calc(16.6% + (100% - 33.2%) * ${v/100})`;
+    pac.style.transition="none";pac.style.left=u(a);
+    if(REDUZ){pac.style.left=u(b);return;}
+    void pac.offsetWidth;pac.style.transition="left 1.1s cubic-bezier(.4,0,.2,1)";pac.style.left=u(b);
+  }
+  function parar(){clearInterval(timer);timer=null;play.setAttribute("aria-pressed","false");}
+  botoes.forEach(b=>b.addEventListener("click",()=>{parar();passo(+b.dataset.p);}));
+  play.addEventListener("click",()=>{
+    if(timer){parar();return;}
+    let n=1;passo(n);play.setAttribute("aria-pressed","true");
+    timer=setInterval(()=>{n++;if(n>4){parar();return;}passo(n);},REDUZ?3000:2600);
+  });
+  tools.forEach(b=>b.addEventListener("click",()=>{
+    tools.forEach(x=>x.setAttribute("aria-pressed",String(x===b)));
+    dica.textContent=DICAS[idioma()][+b.dataset.t];
+  }));
+})();
 /* ---------- céu: estrelas + constelações (sem nome) + o caranguejo (um só) ---------- */
 // Cada figura: [largura, altura, cadeias de pontos 0..1]. Zodíaco + constelações conhecidas.
 const FIGURAS=[
@@ -451,6 +532,9 @@ const FIGURAS=[
 let cores={estrela:"238,243,244",linha:"219,194,147"};
 function lerCores(){const cs=getComputedStyle(document.documentElement);cores.estrela=cs.getPropertyValue("--star-rgb").trim()||cores.estrela;cores.linha=cs.getPropertyValue("--link-rgb").trim()||cores.linha;}
 const ceu=$("ceu"),cx=ceu.getContext("2d"),crab=$("caranguejo"),casa=$("casa");
+let textos=[];
+function medirTexto(){const sy=scrollY;textos=[...document.querySelectorAll('h1,h2,h3,p,li,summary,label,.valor,.eyebrow,.lede')].map(e=>{const r=e.getBoundingClientRect();return r.width>8&&r.height>6?{l:r.left-8,r:r.right+8,t:r.top+sy-6,b:r.bottom+sy+6}:null;}).filter(Boolean);}
+const sobreTexto=(x,y)=>{for(const r of textos)if(x>r.l&&x<r.r&&y>r.t&&y<r.b)return true;return false;};
 let ultimoMov=-9e9,W=0,H=0,docH=0,dpr=Math.min(2,devicePixelRatio||1),estrelas=[],consts=[],paradas=[],mx=-9999,my=-9999,crabPos=null;
 function montar(){
   W=innerWidth;H=innerHeight;docH=document.documentElement.scrollHeight;
@@ -473,6 +557,13 @@ function montar(){
     const arestas=[];cadeias.forEach(c=>{for(let j=0;j<c.length-1;j++)arestas.push({a:c[j],b:c[j+1],p:0});});
     consts.push({arestas,cx:x0+bw/2,cy:y0+bh/2,pontos:cadeias.flat(),topo:true});
   });
+  [[7,-600,-130],[9,430,-140],[20,-300,210],[11,160,270],[6,520,160],[18,-60,-400],[13,-560,200],[21,330,250]].forEach(([fi,dx,dy])=>{
+    const [bw0,bh0,fig]=FIGURAS[fi],bw=bw0*e2*.55,bh=bh0*e2*.55,x0=Math.max(8,Math.min(W-bw-8,hx+dx*e2)),y0=Math.max(70,hy+dy*e2);
+    const cadeias=fig.map(c=>c.map(([u,v])=>({x:x0+u*bw,y:y0+v*bh})));
+    const arestas=[];cadeias.forEach(c=>{for(let j=0;j<c.length-1;j++)arestas.push({a:c[j],b:c[j+1],p:0});});
+    consts.push({arestas,cx:x0+bw/2,cy:y0+bh/2,pontos:cadeias.flat(),topo:true,fina:true});
+  });
+  medirTexto();
   // duas constelações extras na abertura, ao lado do nome (não em cima dele)
   // paradas do caranguejo: uma estrela de cada constelação, na ordem de rolagem
   paradas=consts.filter(c=>!c.topo).map(c=>({x:c.pontos[0].x,y:c.pontos[0].y,s:Math.max(1,c.cy-H/2)})).sort((a,b)=>a.s-b.s);
@@ -503,12 +594,14 @@ function desenhar(t){
     if(cyv<-320||cyv>H+320)continue;
     for(const e of c.arestas){
       if(e.p<=0)continue;const x1=e.a.x,y1=e.a.y-sy,x2=x1+(e.b.x-x1)*e.p,y2=y1+(e.b.y-sy-y1)*e.p;
-      cx.strokeStyle=`rgba(${cores.linha},${perto?.85:.45})`;cx.lineWidth=perto?.9:.55;cx.beginPath();cx.moveTo(x1,y1);cx.lineTo(x2,y2);cx.stroke();
+      const f=(sobreTexto((x1+x2)/2,(e.a.y+e.b.y)/2)?.22:1)*(c.fina?.7:1);
+      cx.strokeStyle=`rgba(${cores.linha},${(perto?.5:.26)*f})`;cx.lineWidth=perto?.6:.4;cx.beginPath();cx.moveTo(x1,y1);cx.lineTo(x2,y2);cx.stroke();
     }
     const brilho=c.arestas.reduce((m,e)=>Math.max(m,e.p),0);
     for(const p of c.pontos){
-      if(perto){cx.fillStyle=`rgba(${cores.linha},.16)`;cx.beginPath();cx.arc(p.x,p.y-sy,7,0,6.283);cx.fill();}
-      cx.fillStyle=`rgba(${cores.estrela},${.35+.6*brilho})`;cx.beginPath();cx.arc(p.x,p.y-sy,perto?2.2:1.5,0,6.283);cx.fill();
+      const f=(sobreTexto(p.x,p.y)?.2:1)*(c.fina?.7:1);
+      if(perto){cx.fillStyle=`rgba(${cores.linha},${.08*f})`;cx.beginPath();cx.arc(p.x,p.y-sy,5,0,6.283);cx.fill();}
+      cx.fillStyle=`rgba(${cores.estrela},${(.22+.4*brilho)*f})`;cx.beginPath();cx.arc(p.x,p.y-sy,perto?1.7:1.1,0,6.283);cx.fill();
     }
   }
   const alvo=alvoCaranguejo(sy);
@@ -523,6 +616,7 @@ function desenhar(t){
 addEventListener("pointermove",e=>{mx=e.clientX;my=e.clientY;ultimoMov=performance.now();if(REDUZ)desenhar(0);},{passive:true});
 addEventListener("scroll",()=>{ultimoMov=performance.now();},{passive:true});
 document.addEventListener("pointerleave",()=>{mx=my=-9999;});
+setInterval(medirTexto,2500);
 addEventListener("resize",()=>{montar();if(REDUZ)desenhar(0);});
 if(REDUZ)addEventListener("scroll",()=>desenhar(0),{passive:true});
 addEventListener("load",()=>{montar();if(REDUZ)desenhar(0);});
@@ -623,7 +717,7 @@ let salvo=null;try{salvo=localStorage.getItem("lang")}catch(e){}
 setLang(salvo||((navigator.language||"pt").startsWith("pt")?"pt":"en"));
 </script>
 
-<!--VERSAO--><script>window.SKILLARIUM_VERSAO="20261112-010527";</script><!--/VERSAO-->
+<!--VERSAO--><script>window.SKILLARIUM_VERSAO="20261112-012531";</script><!--/VERSAO-->
 <!--FAQ-DADOS-->
 <script>
 // Skillarium — cérebro de respostas (11/nov/2026). Acha, no FAQ, a melhor resposta para uma pergunta escrita do jeito da pessoa,
