@@ -527,7 +527,19 @@ const FIGURAS=[
  // Cão Maior
  [220,260,[[[.4,0],[.45,.25],[.2,.45],[.35,.7],[.25,1]],[[.45,.25],[.75,.35],[.85,.8]],[[.35,.7],[.7,.75]]]],
  // Dragão
- [340,240,[[[0,.1],[.12,0],[.22,.15],[.1,.25],[0,.1]],[[.22,.15],[.4,.35],[.55,.3],[.7,.5],[.6,.75],[.8,.9],[1,.8]]]]
+ [340,240,[[[0,.1],[.12,0],[.22,.15],[.1,.25],[0,.1]],[[.22,.15],[.4,.35],[.55,.3],[.7,.5],[.6,.75],[.8,.9],[1,.8]]]],
+ // Escorpião
+ [320,220,[[[.05,.05],[.15,.2],[.28,.4],[.4,.55],[.55,.68],[.7,.8],[.85,.78],[.95,.6],[.88,.45]],[[.15,.2],[.02,.3]],[[.28,.4],[.18,.55]]]],
+ // Leão
+ [300,200,[[[.2,.55],[.18,.3],[.3,.12],[.42,.2],[.38,.4],[.6,.45],[.85,.35]],[[.6,.45],[.7,.8],[.85,.75]],[[.2,.55],[.5,.7],[.6,.45]]]],
+ // Touro
+ [280,220,[[[.35,.55],[.45,.45],[.55,.5],[.65,.62]],[[.45,.45],[.2,.2],[.05,.1]],[[.55,.5],[.8,.3],[.97,.2]],[[.35,.55],[.3,.85]]]],
+ // Sagitário
+ [260,220,[[[.3,.3],[.5,.15],[.7,.3],[.75,.6],[.55,.85],[.3,.7],[.3,.3]],[[.7,.3],[.9,.1]],[[.5,.15],[.4,0]]]],
+ // Balança
+ [240,200,[[[.5,.1],[.2,.5],[.5,.85],[.8,.5],[.5,.1]],[[.2,.5],[.05,.7]],[[.8,.5],[.95,.7]]]],
+ // Virgem
+ [260,260,[[[.5,.05],[.45,.35],[.3,.55],[.2,.9]],[[.45,.35],[.7,.45],[.85,.75]],[[.3,.55],[.6,.7]]]]
 ];
 let cores={estrela:"238,243,244",linha:"219,194,147"};
 function lerCores(){const cs=getComputedStyle(document.documentElement);cores.estrela=cs.getPropertyValue("--star-rgb").trim()||cores.estrela;cores.linha=cs.getPropertyValue("--link-rgb").trim()||cores.linha;}
@@ -542,35 +554,43 @@ function montar(){
   ceu.width=W*dpr;ceu.height=H*dpr;cx.setTransform(dpr,0,0,dpr,0,0);
   estrelas=Array.from({length:Math.round(W*H/6000)},()=>({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.1+.2,f:Math.random()*6,p:Math.random()*.25+.05}));
   const esc=Math.max(.5,Math.min(1.15,W/1250)),margem=Math.max(12,W*.025),topo=H*.9,fim=docH-H*.35;
-  consts=FIGURAS.map(([bw0,bh0,fig],i)=>{
+  // cada constelação aparece uma única vez: Órion, Câncer, Ursa Maior e Cruzeiro do Sul vão para o topo (no celular, só Órion e Câncer)
+  const cel=W<700,reservadas=cel?[12]:[12,13,18];
+  const principais=FIGURAS.filter((_,i)=>!reservadas.includes(i));
+  consts=principais.map(([bw0,bh0,fig],i)=>{
     const bw=bw0*esc,bh=bh0*esc,lado=i%2,desl=((i*37)%5)/5*W*.07;
     const x0=lado?W-margem-bw-desl:margem+desl;
-    const y0=topo+i*((fim-topo)/FIGURAS.length)+((i*53)%7)*8;
+    const y0=topo+i*((fim-topo)/principais.length)+((i*53)%7)*8;
     const cadeias=fig.map(c=>c.map(([u,v])=>({x:x0+u*bw,y:y0+v*bh})));
     const arestas=[];cadeias.forEach(c=>{for(let j=0;j<c.length-1;j++)arestas.push({a:c[j],b:c[j+1],p:0});});
     return{arestas,cx:x0+bw/2,cy:y0+bh/2,pontos:cadeias.flat()};
   });
-  // constelações finas extras, espalhadas ao longo de toda a página, entre as principais
-  [7,9,20,11,6,18,13,21].forEach((fi,k)=>{
-    const [bw0,bh0,fig]=FIGURAS[fi],bw=bw0*esc*.8,bh=bh0*esc*.8,lado=(k+1)%2;
-    const x0=lado?W-margem-bw-W*.12:margem+W*.12,y0=topo+(k+.5)*((fim-topo)/8)+((k*29)%5)*10;
-    const cadeias=fig.map(c=>c.map(([u,v])=>({x:x0+u*bw,y:y0+v*bh})));
-    const arestas=[];cadeias.forEach(c=>{for(let j=0;j<c.length-1;j++)arestas.push({a:c[j],b:c[j+1],p:0});});
-    consts.push({arestas,cx:x0+bw/2,cy:y0+bh/2,pontos:cadeias.flat(),fina:true});
-  });
-  // constelações do topo: bonitas (Órion e Câncer ao lado do caranguejo, Ursa Maior e Cruzeiro mais abaixo), nos espaços vazios
-  const r=casa.getBoundingClientRect(),hx=r.left+r.width/2,hy=r.top+r.height/2+scrollY,e2=Math.max(.5,Math.min(1,W/1300)),cel=W<700;
+  // topo: nos espaços vazios, fora dos dois círculos do caranguejo, abaixo da barra e longe do texto
+  const r=casa.getBoundingClientRect(),hx=r.left+r.width/2,hy=r.top+r.height/2+scrollY,e2=Math.max(.5,Math.min(1,W/1300));
+  const orb=document.querySelector('.orbita').getBoundingClientRect(),Rc=orb.width/2+18;
+  const barra=document.querySelector('header').getBoundingClientRect().bottom+scrollY+12;
+  const el=[...document.querySelectorAll('.wordmark,.lema,.hero h1,.cta')].map(e=>{const g=document.createRange();g.selectNodeContents(e);return e.matches('.cta')?e.getBoundingClientRect():g.getBoundingClientRect();});
+  const titulo=el.length?{l:Math.min(...el.map(q=>q.left))-24,r:Math.max(...el.map(q=>q.right))+24,t:Math.min(...el.map(q=>q.top))+scrollY-10,b:Math.max(...el.map(q=>q.bottom))+scrollY+10}:{l:hx,r:hx,t:hy,b:hy};
+  const hit=(p,q)=>p.l<q.r&&p.r>q.l&&p.t<q.b&&p.b>q.t;
+  const bb=c=>{const xs=c.pontos.map(p=>p.x),ys=c.pontos.map(p=>p.y);return{l:Math.min(...xs)-10,r:Math.max(...xs)+10,t:Math.min(...ys)-10,b:Math.max(...ys)+10};};
+  const distCirculo=k=>Math.hypot(Math.max(k.l,Math.min(hx,k.r))-hx,Math.max(k.t,Math.min(hy,k.b))-hy);
   const ORION=[250,320,[[[.2,.18],[.38,.5],[.25,.93]],[[.8,.18],[.62,.46],[.78,.88]],[[.2,.18],[.5,.05],[.8,.18]],[[.38,.5],[.5,.48],[.62,.46]],[[.5,.48],[.5,.7]],[[.2,.18],[.08,.34],[.05,.58],[.13,.78]],[[.8,.18],[.93,.3],[.95,.5],[.9,.66]]]];
   const CANCER=[210,190,[[[.32,.45],[.5,.35],[.68,.45],[.68,.7],[.5,.8],[.32,.7],[.32,.45]],[[.32,.45],[.18,.25],[.05,.1],[.2,.02]],[[.68,.45],[.82,.25],[.95,.1],[.8,.02]],[[.32,.7],[.14,.82],[.06,.98]],[[.68,.7],[.86,.82],[.94,.98]]]];
-  const topos=cel?[[ORION,-1,.5,-215],[CANCER,1,.62,-195]]:[[ORION,-1,.8,-200],[CANCER,1,.95,-115],[FIGURAS[13],1,.65,250],[FIGURAS[18],-1,.8,235]];
-  topos.forEach(([fg,lado,esc2,dy])=>{
-    const [bw0,bh0,fig]=fg,bw=bw0*e2*esc2,bh=bh0*e2*esc2;
-    const x0=(cel||dy>0)?(lado<0?10:W-bw-10):Math.max(10,Math.min(W-bw-10,hx+(lado<0?-1:1)*(300*e2+bw*(lado<0?1:0))-(lado<0?0:0)));
-    const y0=Math.max(70,hy+dy*(cel?1:e2));
-    const cadeias=fig.map(c=>c.map(([u,v])=>({x:x0+u*bw,y:y0+v*bh})));
-    const arestas=[];cadeias.forEach(c=>{for(let j=0;j<c.length-1;j++)arestas.push({a:c[j],b:c[j+1],p:0});});
-    consts.push({arestas,cx:x0+bw/2,cy:y0+bh/2,pontos:cadeias.flat(),topo:true});
-  });
+  const colocados=[];
+  const montarFig=(fg,x0,y0,bw,bh)=>{const cadeias=fg[2].map(c=>c.map(([u,v])=>({x:x0+u*bw,y:y0+v*bh})));const arestas=[];cadeias.forEach(c=>{for(let j=0;j<c.length-1;j++)arestas.push({a:c[j],b:c[j+1],p:0});});return{arestas,cx:x0+bw/2,cy:y0+bh/2,pontos:cadeias.flat(),topo:true};};
+  const valido=c=>{const k=bb(c);return k.l>=6&&k.r<=W-6&&k.t>=barra&&distCirculo(k)>=Rc&&!hit(k,titulo)&&!colocados.some(q=>hit(k,q))&&c.pontos.every(p=>!sobreTexto(p.x,p.y));};
+  // [figura, escala, lado preferido (+1 direita, -1 esquerda), y inicial da busca]
+  const pedidos=cel?[[CANCER,.62,1,barra],[ORION,.5,-1,hy-40]]:[[CANCER,.95,1,barra],[ORION,.85,-1,hy-90],[FIGURAS[13],.65,1,titulo.t+40],[FIGURAS[18],.8,-1,titulo.t+60]];
+  for(const [fg,esc2,lado,yIni] of pedidos){
+    let achou=null;
+    for(const f of [1,.8,.65]){
+      const bw=fg[0]*e2*esc2*f,bh=fg[1]*e2*esc2*f;
+      for(let y=yIni;y<yIni+Math.max(420,H*.6)&&!achou;y+=8)for(let k=0;k<=W&&!achou;k+=8){
+        const x=lado>0?W-bw-6-k:6+k;if(x<6||x+bw>W-6)continue;
+        const c=montarFig(fg,x,y,bw,bh);if(valido(c))achou=c;}
+      if(achou)break;}
+    if(achou){consts.push(achou);colocados.push(bb(achou));}
+  }
   // as principais fogem do texto: tenta deslocar para o lado até achar um espaço vazio
   const sobre=c=>c.pontos.filter(p=>sobreTexto(p.x,p.y)).length;
   consts.filter(c=>!c.topo&&!c.fina).forEach(c=>{
@@ -578,16 +598,7 @@ function montar(){
     for(const f of[-.06,.06,-.12,.12,-.2,.2,-.3,.3]){const dx=Math.max(8-x1,Math.min(W-8-x2,f*W));if(!dx)continue;c.pontos.forEach(p=>p.x+=dx);const n=sobre(c);c.pontos.forEach(p=>p.x-=dx);if(n<nota){nota=n;melhor=dx;if(!n)break;}}
     if(melhor){c.pontos.forEach(p=>p.x+=melhor);c.cx+=melhor;}
   });
-  // nada fica em cima do caranguejo, do título ou de outra constelação
-  {const R=Math.max(125,Math.min(170,W*.2));
-   const bb=c=>{const xs=c.pontos.map(p=>p.x),ys=c.pontos.map(p=>p.y);return{l:Math.min(...xs)-10,r:Math.max(...xs)+10,t:Math.min(...ys)-10,b:Math.max(...ys)+10};};
-   const hit=(p,q)=>p.l<q.r&&p.r>q.l&&p.t<q.b&&p.b>q.t;
-   const el=[...document.querySelectorAll('.wordmark,.lema,.hero h1,.cta')].map(e=>{const g=document.createRange();g.selectNodeContents(e);return e.matches('.cta')?e.getBoundingClientRect():g.getBoundingClientRect();});
-   const titulo=el.length?{l:Math.min(...el.map(q=>q.left))-24,r:Math.max(...el.map(q=>q.right))+24,t:Math.min(...el.map(q=>q.top))+scrollY-10,b:Math.max(...el.map(q=>q.bottom))+scrollY+10}:{l:hx,r:hx,t:hy,b:hy};
-   const halo={l:hx-R,r:hx+R,t:hy-R,b:hy+R},ficam=[],caixas=[];
-   for(const c of consts){const k=bb(c);if(!c.topo&&!c.fina){caixas.push(k);ficam.push(c);continue;}
-     if(hit(k,titulo)||hit(k,halo)||caixas.some(q=>hit(k,q)))continue;caixas.push(k);ficam.push(c);}
-   consts=ficam;}
+  consts=consts.filter(c=>c.topo||!colocados.some(q=>hit(bb(c),q)));
   // paradas do caranguejo: uma estrela de cada constelação (de preferência fora do texto), na ordem de rolagem
   paradas=consts.filter(c=>!c.topo&&!c.fina).map(c=>{const p=c.pontos.find(q=>!sobreTexto(q.x,q.y))||c.pontos[0];return{x:p.x,y:p.y,s:Math.max(1,c.cy-H/2)};}).sort((a,b)=>a.s-b.s);
 }
@@ -740,7 +751,7 @@ let salvo=null;try{salvo=localStorage.getItem("lang")}catch(e){}
 setLang(salvo||((navigator.language||"pt").startsWith("pt")?"pt":"en"));
 </script>
 
-<!--VERSAO--><script>window.SKILLARIUM_VERSAO="20261112-015940";</script><!--/VERSAO-->
+<!--VERSAO--><script>window.SKILLARIUM_VERSAO="20261112-020953";</script><!--/VERSAO-->
 <!--FAQ-DADOS-->
 <script>
 // Skillarium — cérebro de respostas (11/nov/2026). Acha, no FAQ, a melhor resposta para uma pergunta escrita do jeito da pessoa,
