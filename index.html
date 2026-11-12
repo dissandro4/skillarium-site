@@ -555,7 +555,7 @@ function montar(){
   estrelas=Array.from({length:Math.round(W*H/6000)},()=>({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.1+.2,f:Math.random()*6,p:Math.random()*.25+.05}));
   const esc=Math.max(.5,Math.min(1.15,W/1250)),margem=Math.max(12,W*.025),topo=H*.9,fim=docH-H*.35;
   // cada constelação aparece uma única vez: Órion, Câncer, Ursa Maior e Cruzeiro do Sul vão para o topo (no celular, só Órion e Câncer)
-  const cel=W<700,reservadas=cel?[12]:[12,13,18];
+  const cel=W<700,reservadas=cel?[12,13,15,22]:[12,13,18];
   const principais=FIGURAS.filter((_,i)=>!reservadas.includes(i));
   consts=principais.map(([bw0,bh0,fig],i)=>{
     const bw=bw0*esc,bh=bh0*esc,lado=i%2,desl=((i*37)%5)/5*W*.07;
@@ -572,22 +572,26 @@ function montar(){
   const el=[...document.querySelectorAll('.wordmark,.lema,.hero h1,.cta')].map(e=>{const g=document.createRange();g.selectNodeContents(e);return e.matches('.cta')?e.getBoundingClientRect():g.getBoundingClientRect();});
   const titulo=el.length?{l:Math.min(...el.map(q=>q.left))-24,r:Math.max(...el.map(q=>q.right))+24,t:Math.min(...el.map(q=>q.top))+scrollY-10,b:Math.max(...el.map(q=>q.bottom))+scrollY+10}:{l:hx,r:hx,t:hy,b:hy};
   const hit=(p,q)=>p.l<q.r&&p.r>q.l&&p.t<q.b&&p.b>q.t;
-  const bb=c=>{const xs=c.pontos.map(p=>p.x),ys=c.pontos.map(p=>p.y);return{l:Math.min(...xs)-10,r:Math.max(...xs)+10,t:Math.min(...ys)-10,b:Math.max(...ys)+10};};
-  const distCirculo=k=>Math.hypot(Math.max(k.l,Math.min(hx,k.r))-hx,Math.max(k.t,Math.min(hy,k.b))-hy);
+  const bb=c=>{const xs=c.pontos.map(p=>p.x),ys=c.pontos.map(p=>p.y);return{l:Math.min(...xs)-16,r:Math.max(...xs)+16,t:Math.min(...ys)-16,b:Math.max(...ys)+16};};
+  const amostras=c=>{const o=[];for(const e of c.arestas){const n=Math.max(1,Math.ceil(Math.hypot(e.b.x-e.a.x,e.b.y-e.a.y)/8));for(let i=0;i<=n;i++)o.push([e.a.x+(e.b.x-e.a.x)*i/n,e.a.y+(e.b.y-e.a.y)*i/n]);}return o;};
   const ORION=[250,320,[[[.2,.18],[.38,.5],[.25,.93]],[[.8,.18],[.62,.46],[.78,.88]],[[.2,.18],[.5,.05],[.8,.18]],[[.38,.5],[.5,.48],[.62,.46]],[[.5,.48],[.5,.7]],[[.2,.18],[.08,.34],[.05,.58],[.13,.78]],[[.8,.18],[.93,.3],[.95,.5],[.9,.66]]]];
   const CANCER=[210,190,[[[.32,.45],[.5,.35],[.68,.45],[.68,.7],[.5,.8],[.32,.7],[.32,.45]],[[.32,.45],[.18,.25],[.05,.1],[.2,.02]],[[.68,.45],[.82,.25],[.95,.1],[.8,.02]],[[.32,.7],[.14,.82],[.06,.98]],[[.68,.7],[.86,.82],[.94,.98]]]];
   const colocados=[];
   const montarFig=(fg,x0,y0,bw,bh)=>{const cadeias=fg[2].map(c=>c.map(([u,v])=>({x:x0+u*bw,y:y0+v*bh})));const arestas=[];cadeias.forEach(c=>{for(let j=0;j<c.length-1;j++)arestas.push({a:c[j],b:c[j+1],p:0});});return{arestas,cx:x0+bw/2,cy:y0+bh/2,pontos:cadeias.flat(),topo:true};};
-  const valido=c=>{const k=bb(c);return k.l>=6&&k.r<=W-6&&k.t>=barra&&distCirculo(k)>=Rc&&!hit(k,titulo)&&!colocados.some(q=>hit(k,q))&&c.pontos.every(p=>!sobreTexto(p.x,p.y));};
-  // [figura, escala, lado preferido (+1 direita, -1 esquerda), y inicial da busca]
-  const pedidos=cel?[[CANCER,.62,1,barra],[ORION,.5,-1,hy-40]]:[[CANCER,.95,1,barra],[ORION,.85,-1,hy-90],[FIGURAS[13],.65,1,titulo.t+40],[FIGURAS[18],.8,-1,titulo.t+60]];
-  for(const [fg,esc2,lado,yIni] of pedidos){
+  const valido=c=>{const k=bb(c);if(k.l<6||k.r>W-6||k.t<barra||hit(k,titulo)||colocados.some(q=>hit(k,q)))return false;if(amostras(c).some(([x,y])=>Math.hypot(x-hx,y-hy)<Rc))return false;return c.pontos.every(p=>!sobreTexto(p.x,p.y));};
+  // [figura, lado (+1 direita, -1 esquerda, 0 centro), y inicial da busca]: busca a maior versão que cabe, longe dos círculos, do texto e das outras
+  const pedidos=cel?[[FIGURAS[15],1,barra],[FIGURAS[22],-1,barra],[ORION,-1,hy-60],[FIGURAS[13],1,hy+20]]:[[CANCER,1,barra],[ORION,-1,hy-110],[FIGURAS[13],1,titulo.t+30],[FIGURAS[18],-1,titulo.t+50]];
+  const escalas=cel?[2.1,1.8,1.55,1.3,1.1,.95,.8,.65,.5]:[1.35,1.2,1.05,.9,.75,.6];
+  for(const [fg,lado,yIni] of pedidos){
     let achou=null;
-    for(const f of [1,.8,.65]){
-      const bw=fg[0]*e2*esc2*f,bh=fg[1]*e2*esc2*f;
-      for(let y=yIni;y<yIni+Math.max(420,H*.6)&&!achou;y+=8)for(let k=0;k<=W&&!achou;k+=8){
-        const x=lado>0?W-bw-6-k:6+k;if(x<6||x+bw>W-6)continue;
-        const c=montarFig(fg,x,y,bw,bh);if(valido(c))achou=c;}
+    for(const lim of [.3,1]){
+      for(const f of escalas){
+        const bw=Math.min(fg[0]*e2*f,cel?W*.5:300),bh=bw*fg[1]/fg[0];
+        for(let y=yIni;y<yIni+(cel?240:Math.max(420,H*.6))&&!achou;y+=10)for(let k=0;k<=W*lim&&!achou;k+=10){
+          const x=lado>0?W-bw-6-k:lado<0?6+k:(W-bw)/2+((k/10)%2?-1:1)*Math.ceil(k/20)*10;
+          if(x<6||x+bw>W-6)continue;
+          const c=montarFig(fg,x,y,bw,bh);if(valido(c))achou=c;}
+        if(achou)break;}
       if(achou)break;}
     if(achou){consts.push(achou);colocados.push(bb(achou));}
   }
@@ -619,7 +623,7 @@ function desenhar(t){
   for(const c of consts){
     const cyv=c.cy-sy;
     const perto=Math.hypot(c.cx-mx,cyv-my)<260,mexendo=performance.now()-ultimoMov<1200;
-    const acesa=c.topo?(perto||mexendo):((cyv>H*.08&&cyv<H*.92)||perto);
+    const acesa=c.topo?true:((cyv>H*.08&&cyv<H*.92)||perto);
     let anterior=1;
     for(const e of c.arestas){
       if(acesa){if(anterior>=1)e.p=Math.min(1,e.p+(REDUZ?1:.03));}else e.p=Math.max(0,e.p-(REDUZ?1:.025));
@@ -651,7 +655,7 @@ addEventListener("pointermove",e=>{mx=e.clientX;my=e.clientY;ultimoMov=performan
 addEventListener("scroll",()=>{ultimoMov=performance.now();},{passive:true});
 document.addEventListener("pointerleave",()=>{mx=my=-9999;});
 setInterval(medirTexto,2500);
-addEventListener("resize",()=>{montar();if(REDUZ)desenhar(0);});
+let _rz;addEventListener("resize",()=>{clearTimeout(_rz);_rz=setTimeout(()=>{montar();if(REDUZ)desenhar(0);},150);});
 if(REDUZ)addEventListener("scroll",()=>desenhar(0),{passive:true});
 addEventListener("load",()=>{montar();if(REDUZ)desenhar(0);});
 
@@ -751,7 +755,7 @@ let salvo=null;try{salvo=localStorage.getItem("lang")}catch(e){}
 setLang(salvo||((navigator.language||"pt").startsWith("pt")?"pt":"en"));
 </script>
 
-<!--VERSAO--><script>window.SKILLARIUM_VERSAO="20261112-020953";</script><!--/VERSAO-->
+<!--VERSAO--><script>window.SKILLARIUM_VERSAO="20261112-021955";</script><!--/VERSAO-->
 <!--FAQ-DADOS-->
 <script>
 // Skillarium — cérebro de respostas (11/nov/2026). Acha, no FAQ, a melhor resposta para uma pergunta escrita do jeito da pessoa,
