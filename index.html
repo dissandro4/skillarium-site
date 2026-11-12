@@ -538,6 +538,7 @@ const sobreTexto=(x,y)=>{for(const r of textos)if(x>r.l&&x<r.r&&y>r.t&&y<r.b)ret
 let ultimoMov=-9e9,W=0,H=0,docH=0,dpr=Math.min(2,devicePixelRatio||1),estrelas=[],consts=[],paradas=[],mx=-9999,my=-9999,crabPos=null;
 function montar(){
   W=innerWidth;H=innerHeight;docH=document.documentElement.scrollHeight;
+  medirTexto();
   ceu.width=W*dpr;ceu.height=H*dpr;cx.setTransform(dpr,0,0,dpr,0,0);
   estrelas=Array.from({length:Math.round(W*H/6000)},()=>({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.1+.2,f:Math.random()*6,p:Math.random()*.25+.05}));
   const esc=Math.max(.5,Math.min(1.15,W/1250)),margem=Math.max(12,W*.025),topo=H*.9,fim=docH-H*.35;
@@ -551,39 +552,44 @@ function montar(){
   });
   // constelações finas extras, espalhadas ao longo de toda a página, entre as principais
   [7,9,20,11,6,18,13,21].forEach((fi,k)=>{
-    const [bw0,bh0,fig]=FIGURAS[fi],bw=bw0*esc*.6,bh=bh0*esc*.6,lado=(k+1)%2;
+    const [bw0,bh0,fig]=FIGURAS[fi],bw=bw0*esc*.8,bh=bh0*esc*.8,lado=(k+1)%2;
     const x0=lado?W-margem-bw-W*.12:margem+W*.12,y0=topo+(k+.5)*((fim-topo)/8)+((k*29)%5)*10;
     const cadeias=fig.map(c=>c.map(([u,v])=>({x:x0+u*bw,y:y0+v*bh})));
     const arestas=[];cadeias.forEach(c=>{for(let j=0;j<c.length-1;j++)arestas.push({a:c[j],b:c[j+1],p:0});});
     consts.push({arestas,cx:x0+bw/2,cy:y0+bh/2,pontos:cadeias.flat(),fina:true});
   });
-  // constelações do topo, em volta do botão do caranguejo: só acendem com movimento (mouse ou rolagem)
-  const r=casa.getBoundingClientRect(),hx=r.left+r.width/2,hy=r.top+r.height/2+scrollY,e2=Math.max(.45,Math.min(1,W/1300));
-  [[3,-470,-250],[15,270,-230],[17,-430,40],[12,300,30]].slice(0,W<700?2:4).forEach(([fi,dx,dy])=>{
-    const [bw0,bh0,fig]=FIGURAS[fi],bw=bw0*e2*.8,bh=bh0*e2*.8,x0=Math.max(8,Math.min(W-bw-8,hx+dx*e2)),y0=Math.max(70,hy+dy*e2);
+  // constelações do topo: bonitas (Órion e Câncer ao lado do caranguejo, Ursa Maior e Cruzeiro mais abaixo), nos espaços vazios
+  const r=casa.getBoundingClientRect(),hx=r.left+r.width/2,hy=r.top+r.height/2+scrollY,e2=Math.max(.5,Math.min(1,W/1300)),cel=W<700;
+  const ORION=[250,320,[[[.2,.18],[.38,.5],[.25,.93]],[[.8,.18],[.62,.46],[.78,.88]],[[.2,.18],[.5,.05],[.8,.18]],[[.38,.5],[.5,.48],[.62,.46]],[[.5,.48],[.5,.7]],[[.2,.18],[.08,.34],[.05,.58],[.13,.78]],[[.8,.18],[.93,.3],[.95,.5],[.9,.66]]]];
+  const CANCER=[210,190,[[[.32,.45],[.5,.35],[.68,.45],[.68,.7],[.5,.8],[.32,.7],[.32,.45]],[[.32,.45],[.18,.25],[.05,.1],[.2,.02]],[[.68,.45],[.82,.25],[.95,.1],[.8,.02]],[[.32,.7],[.14,.82],[.06,.98]],[[.68,.7],[.86,.82],[.94,.98]]]];
+  const topos=cel?[[ORION,-1,.5,-215],[CANCER,1,.62,-195]]:[[ORION,-1,.8,-200],[CANCER,1,.95,-115],[FIGURAS[13],1,.65,250],[FIGURAS[18],-1,.8,235]];
+  topos.forEach(([fg,lado,esc2,dy])=>{
+    const [bw0,bh0,fig]=fg,bw=bw0*e2*esc2,bh=bh0*e2*esc2;
+    const x0=(cel||dy>0)?(lado<0?10:W-bw-10):Math.max(10,Math.min(W-bw-10,hx+(lado<0?-1:1)*(300*e2+bw*(lado<0?1:0))-(lado<0?0:0)));
+    const y0=Math.max(70,hy+dy*(cel?1:e2));
     const cadeias=fig.map(c=>c.map(([u,v])=>({x:x0+u*bw,y:y0+v*bh})));
     const arestas=[];cadeias.forEach(c=>{for(let j=0;j<c.length-1;j++)arestas.push({a:c[j],b:c[j+1],p:0});});
     consts.push({arestas,cx:x0+bw/2,cy:y0+bh/2,pontos:cadeias.flat(),topo:true});
   });
-  // nenhuma constelação do topo fica em cima do caranguejo: empurra para fora do halo (raio ~150px)
-  {const R=Math.max(120,Math.min(170,W*.2));
-   consts.filter(c=>c.topo).forEach(c=>{
-     const xs=c.pontos.map(p=>p.x),ys=c.pontos.map(p=>p.y),x1=Math.min(...xs),x2=Math.max(...xs),y1=Math.min(...ys),y2=Math.max(...ys);
-     const nx=Math.max(x1,Math.min(hx,x2)),ny=Math.max(y1,Math.min(hy,y2)),d=Math.hypot(nx-hx,ny-hy);
-     if(d<R){let ux=(c.cx-hx),uy=(c.cy-hy);const n=Math.hypot(ux,uy)||1;ux/=n;uy/=n;
-       let dx=0,dy=0;for(let k=0;k<40&&Math.hypot(Math.max(x1+dx,Math.min(hx,x2+dx))-hx,Math.max(y1+dy,Math.min(hy,y2+dy))-hy)<R;k++){dx+=ux*10;dy+=uy*10;}
-       dx=Math.max(8-x1,Math.min(W-8-x2,dx));dy=Math.max(70-y1,dy);
-       c.pontos.forEach(p=>{p.x+=dx;p.y+=dy;});c.cx+=dx;c.cy+=dy;}
-   });}
-  {const bb=c=>{const xs=c.pontos.map(p=>p.x),ys=c.pontos.map(p=>p.y);return{l:Math.min(...xs)-24,r:Math.max(...xs)+24,t:Math.min(...ys)-24,b:Math.max(...ys)+24};};
-   const hit=(p,q)=>p.l<q.r&&p.r>q.l&&p.t<q.b&&p.b>q.t,ficam=[],caixas=[];
-   const titulo={l:hx-Math.min(400,W*.46),r:hx+Math.min(400,W*.46),t:hy+90,b:hy+360};
-   for(const c of consts){const k=bb(c);if(!c.topo&&!c.fina){caixas.push(k);ficam.push(c);continue;}if((c.topo&&hit(k,titulo))||caixas.some(q=>hit(k,q)))continue;caixas.push(k);ficam.push(c);}
+  // as principais fogem do texto: tenta deslocar para o lado até achar um espaço vazio
+  const sobre=c=>c.pontos.filter(p=>sobreTexto(p.x,p.y)).length;
+  consts.filter(c=>!c.topo&&!c.fina).forEach(c=>{
+    if(!sobre(c))return;const xs=c.pontos.map(p=>p.x),x1=Math.min(...xs),x2=Math.max(...xs);let melhor=0,nota=sobre(c);
+    for(const f of[-.06,.06,-.12,.12,-.2,.2,-.3,.3]){const dx=Math.max(8-x1,Math.min(W-8-x2,f*W));if(!dx)continue;c.pontos.forEach(p=>p.x+=dx);const n=sobre(c);c.pontos.forEach(p=>p.x-=dx);if(n<nota){nota=n;melhor=dx;if(!n)break;}}
+    if(melhor){c.pontos.forEach(p=>p.x+=melhor);c.cx+=melhor;}
+  });
+  // nada fica em cima do caranguejo, do título ou de outra constelação
+  {const R=Math.max(125,Math.min(170,W*.2));
+   const bb=c=>{const xs=c.pontos.map(p=>p.x),ys=c.pontos.map(p=>p.y);return{l:Math.min(...xs)-10,r:Math.max(...xs)+10,t:Math.min(...ys)-10,b:Math.max(...ys)+10};};
+   const hit=(p,q)=>p.l<q.r&&p.r>q.l&&p.t<q.b&&p.b>q.t;
+   const el=[...document.querySelectorAll('.wordmark,.lema,.hero h1,.cta')].map(e=>{const g=document.createRange();g.selectNodeContents(e);return e.matches('.cta')?e.getBoundingClientRect():g.getBoundingClientRect();});
+   const titulo=el.length?{l:Math.min(...el.map(q=>q.left))-24,r:Math.max(...el.map(q=>q.right))+24,t:Math.min(...el.map(q=>q.top))+scrollY-10,b:Math.max(...el.map(q=>q.bottom))+scrollY+10}:{l:hx,r:hx,t:hy,b:hy};
+   const halo={l:hx-R,r:hx+R,t:hy-R,b:hy+R},ficam=[],caixas=[];
+   for(const c of consts){const k=bb(c);if(!c.topo&&!c.fina){caixas.push(k);ficam.push(c);continue;}
+     if(hit(k,titulo)||hit(k,halo)||caixas.some(q=>hit(k,q)))continue;caixas.push(k);ficam.push(c);}
    consts=ficam;}
-  medirTexto();
-  // duas constelações extras na abertura, ao lado do nome (não em cima dele)
-  // paradas do caranguejo: uma estrela de cada constelação, na ordem de rolagem
-  paradas=consts.filter(c=>!c.topo&&!c.fina).map(c=>({x:c.pontos[0].x,y:c.pontos[0].y,s:Math.max(1,c.cy-H/2)})).sort((a,b)=>a.s-b.s);
+  // paradas do caranguejo: uma estrela de cada constelação (de preferência fora do texto), na ordem de rolagem
+  paradas=consts.filter(c=>!c.topo&&!c.fina).map(c=>{const p=c.pontos.find(q=>!sobreTexto(q.x,q.y))||c.pontos[0];return{x:p.x,y:p.y,s:Math.max(1,c.cy-H/2)};}).sort((a,b)=>a.s-b.s);
 }
 const suave=t=>{t=Math.min(1,Math.max(0,(t-.35)/.3));return t*t*(3-2*t);};
 function alvoCaranguejo(sy){
@@ -611,14 +617,14 @@ function desenhar(t){
     if(cyv<-320||cyv>H+320)continue;
     for(const e of c.arestas){
       if(e.p<=0)continue;const x1=e.a.x,y1=e.a.y-sy,x2=x1+(e.b.x-x1)*e.p,y2=y1+(e.b.y-sy-y1)*e.p;
-      const f=(sobreTexto((x1+x2)/2,(e.a.y+e.b.y)/2)?.22:1)*(c.fina?.7:1);
-      cx.strokeStyle=`rgba(${cores.linha},${(perto?.5:.26)*f})`;cx.lineWidth=perto?.6:.4;cx.beginPath();cx.moveTo(x1,y1);cx.lineTo(x2,y2);cx.stroke();
+      const f=(sobreTexto((x1+x2)/2,(e.a.y+e.b.y)/2)?.3:1)*1;
+      cx.strokeStyle=`rgba(${cores.linha},${(perto?.8:.5)*f})`;cx.lineWidth=.6;cx.beginPath();cx.moveTo(x1,y1);cx.lineTo(x2,y2);cx.stroke();
     }
     const brilho=c.arestas.reduce((m,e)=>Math.max(m,e.p),0);
     for(const p of c.pontos){
-      const f=(sobreTexto(p.x,p.y)?.2:1)*(c.fina?.7:1);
+      const f=sobreTexto(p.x,p.y)?.3:1;
       if(perto){cx.fillStyle=`rgba(${cores.linha},${.08*f})`;cx.beginPath();cx.arc(p.x,p.y-sy,5,0,6.283);cx.fill();}
-      cx.fillStyle=`rgba(${cores.estrela},${(.22+.4*brilho)*f})`;cx.beginPath();cx.arc(p.x,p.y-sy,perto?1.7:1.1,0,6.283);cx.fill();
+      cx.fillStyle=`rgba(${cores.estrela},${(.45+.5*brilho)*f})`;cx.beginPath();cx.arc(p.x,p.y-sy,perto?2:1.4,0,6.283);cx.fill();
     }
   }
   const alvo=alvoCaranguejo(sy);
@@ -734,7 +740,7 @@ let salvo=null;try{salvo=localStorage.getItem("lang")}catch(e){}
 setLang(salvo||((navigator.language||"pt").startsWith("pt")?"pt":"en"));
 </script>
 
-<!--VERSAO--><script>window.SKILLARIUM_VERSAO="20261112-015249";</script><!--/VERSAO-->
+<!--VERSAO--><script>window.SKILLARIUM_VERSAO="20261112-015940";</script><!--/VERSAO-->
 <!--FAQ-DADOS-->
 <script>
 // Skillarium — cérebro de respostas (11/nov/2026). Acha, no FAQ, a melhor resposta para uma pergunta escrita do jeito da pessoa,
