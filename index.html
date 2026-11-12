@@ -276,7 +276,7 @@ Memorando de 1 página.</button>
   <div class="head">
     <div class="eyebrow" data-pt="O selo" data-en="The seal">O selo</div>
     <h2 data-pt="Só entra o que passou pelas três portas." data-en="Only what passes all three gates gets in.">Só entra o que passou pelas três portas.</h2>
-    <p class="lede" data-pt="Na internet há milhares de skills, e muitas são cascas vazias. Analisamos 5.048 skills públicas. Foi isto que sobrou." data-en="There are thousands of skills online, and many are empty shells. We analysed 5,048 public skills. This is what was left.">Na internet há milhares de skills, e muitas são cascas vazias. Analisamos 5.048 skills públicas. Foi isto que sobrou.</p>
+    <p class="lede" data-pt="Na internet há milhares de skills, e muitas são cascas vazias. Nós testamos cada uma antes de ela entrar. Só chega até você a que passa." data-en="There are thousands of skills online, and many are empty shells. We test every one before it gets in. Only what passes reaches you.">Na internet há milhares de skills, e muitas são cascas vazias. Nós testamos cada uma antes de ela entrar. Só chega até você a que passa.</p>
   </div>
   <div class="gates">
     <div class="gate panel"><span class="n">I</span><h3 data-pt="Origem" data-en="Origin">Origem</h3><p class="muted" data-pt="Licença que permite uso comercial e crédito ao autor." data-en="A licence that allows commercial use, and credit to the author.">Licença que permite uso comercial e crédito ao autor.</p><span class="state pass" data-pt="✓ conferida" data-en="✓ checked">✓ conferida</span></div>
@@ -284,10 +284,9 @@ Memorando de 1 página.</button>
     <div class="gate panel"><span class="n">III</span><h3 data-pt="Especialista" data-en="Expert">Especialista</h3><p class="muted" data-pt="Testadores convidados usam no trabalho e dão o selo às melhores." data-en="Invited testers use it at work and seal the best ones.">Testadores convidados usam no trabalho e dão o selo às melhores.</p><span class="state" data-pt="nas melhores" data-en="on the best">nas melhores</span></div>
   </div>
   <div class="counter">
-    <div class="count"><b>5.048</b><span data-pt="skills públicas analisadas" data-en="public skills analysed">skills públicas analisadas</span></div>
-    <div class="count"><b>2.762</b><span data-pt="com licença e únicas" data-en="licensed and unique">com licença e únicas</span></div>
-    <div class="count"><b>400</b><span data-pt="na estreia, todas testadas" data-en="at launch, all tested">na estreia, todas testadas</span></div>
-    <div class="count"><b>13</b><span data-pt="novas toda semana" data-en="new every week">novas toda semana</span></div>
+    <div class="count"><b id="st-n">157</b><span data-pt="skills testadas e aprovadas hoje" data-en="skills tested and approved today">skills testadas e aprovadas hoje</span></div>
+    <div class="count"><b id="st-m">400</b><span data-pt="é a meta da estreia" data-en="is the launch goal">é a meta da estreia</span></div>
+    <div class="count"><b>13</b><span data-pt="novas por semana, em média, depois" data-en="new per week on average, after launch">novas por semana, em média, depois</span></div>
   </div>
 </div></section>
 
@@ -624,7 +623,7 @@ let salvo=null;try{salvo=localStorage.getItem("lang")}catch(e){}
 setLang(salvo||((navigator.language||"pt").startsWith("pt")?"pt":"en"));
 </script>
 
-<!--VERSAO--><script>window.SKILLARIUM_VERSAO="20261111-222358";</script><!--/VERSAO-->
+<!--VERSAO--><script>window.SKILLARIUM_VERSAO="20261112-004630";</script><!--/VERSAO-->
 <!--FAQ-DADOS-->
 <script>
 // Skillarium — cérebro de respostas (11/nov/2026). Acha, no FAQ, a melhor resposta para uma pergunta escrita do jeito da pessoa,
@@ -821,6 +820,13 @@ const FAQ_PUBLICO=[{"cat": ["Começando", "Getting started"], "publicar": true, 
     } catch (e) { /* sem internet: segue com a versão que está aqui */ }
   }
   checar(); document.addEventListener('visibilitychange', () => { if (!document.hidden) checar(); }); setInterval(checar, 300000);
+})();
+
+// Números verdadeiros do site: vêm de status.json (gerado do catálogo a cada execução da tarefa diária). Sem internet ou sem o arquivo, vale o número que já está na página.
+(function () {
+  const a = document.getElementById('st-n'), b = document.getElementById('st-m'), c = document.getElementById('st-f'); if (!a || !/github\.io$/.test(location.hostname)) return;
+  const base = location.pathname.replace(/[^/]*$/, '');
+  fetch(base + 'status.json?x=' + Date.now(), { cache: 'no-store' }).then((r) => r.json()).then((s) => { if (s.aprovadas) { a.textContent = s.aprovadas; if (b) b.textContent = s.meta; if (c) c.textContent = s.faltam; } }).catch(() => {});
 })();
 
 </script>
