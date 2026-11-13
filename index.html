@@ -211,6 +211,7 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:16px 28px;align-items:center}
 .fer small{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent)}
 .fer p{font-size:14.5px;line-height:1.5;color:var(--muted);max-height:0;opacity:0;overflow:hidden;transition:max-height .3s ease,opacity .22s ease}
 .fer[aria-expanded="true"] p{max-height:12em;opacity:1}
+.mv-abrir{display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin:6px 0 4px}
 .fer-dica{margin-top:18px;font-size:14px;color:var(--muted)}
 .fer.vivo .fer-ic svg *{stroke-dasharray:1;stroke-dashoffset:1;animation:fer-traco .9s ease forwards}
 @keyframes fer-traco{to{stroke-dashoffset:0}}
@@ -381,6 +382,7 @@ Memorando de 1 página.</button>
     <h2 data-pt="O Skillarium é um MCP." data-en="Skillarium is an MCP server.">O Skillarium é um MCP.</h2>
     <p class="lede" data-pt="MCP (Model Context Protocol) é a tomada padrão das IAs: qualquer IA que aceita MCP passa a usar as ferramentas de um programa que oferece MCP. Ligue o Skillarium uma vez e, a cada etapa do seu projeto, a sua IA busca a skill testada certa, aplica e diz qual usou. Tudo roda no seu computador." data-en="MCP (Model Context Protocol) is the standard plug for AIs: any AI that supports MCP can use the tools of a program that offers MCP. Connect Skillarium once and, at each step of your project, your AI finds the right tested skill, applies it and tells you which one it used. Everything runs on your computer.">MCP (Model Context Protocol) é a tomada padrão das IAs: qualquer IA que aceita MCP passa a usar as ferramentas de um programa que oferece MCP. Ligue o Skillarium uma vez e, a cada etapa do seu projeto, a sua IA busca a skill testada certa, aplica e diz qual usou. Tudo roda no seu computador.</p>
   </div>
+  <div class="mv-abrir"><button type="button" class="btn primary" id="mv-abrir" data-pt="▶ Ver o MCP trabalhando ao vivo" data-en="▶ Watch MCP work, live">▶ Ver o MCP trabalhando ao vivo</button><span class="muted" data-pt="Uma janela com um pedido de verdade, do começo ao fim." data-en="A window with a real request, start to finish.">Uma janela com um pedido de verdade, do começo ao fim.</span></div>
   <div class="mcp-demo" id="mcp-demo">
     <div class="mcp-passos" role="group" aria-label="Passo a passo / Step by step">
       <button type="button" data-p="1" data-pt="1 · Você pede" data-en="1 · You ask">1 · Você pede</button>
@@ -552,6 +554,8 @@ const REDUZ=matchMedia("(prefers-reduced-motion: reduce)").matches;
     cards.forEach(c=>io.observe(c));
   }else cards.forEach(c=>c.classList.add("vivo"));
 })();
+
+document.getElementById("mv-abrir").addEventListener("click",()=>window.abrirMcpVivo());
 
 /* ---------- céu: estrelas + constelações (sem nome) + o caranguejo (um só) ---------- */
 // Cada figura: [largura, altura, cadeias de pontos 0..1]. Zodíaco + constelações conhecidas.
@@ -821,7 +825,7 @@ let salvo=null;try{salvo=localStorage.getItem("lang")}catch(e){}
 setLang(salvo||((navigator.language||"pt").startsWith("pt")?"pt":"en"));
 </script>
 
-<!--VERSAO--><script>window.SKILLARIUM_VERSAO="20261113-084907";</script><!--/VERSAO-->
+<!--VERSAO--><script>window.SKILLARIUM_VERSAO="20261113-085827";</script><!--/VERSAO-->
 <!--FAQ-DADOS-->
 <script>
 // Skillarium — cérebro de respostas (11/nov/2026). Acha, no FAQ, a melhor resposta para uma pergunta escrita do jeito da pessoa,
@@ -1029,3 +1033,170 @@ const FAQ_PUBLICO=[{"cat": ["Começando", "Getting started"], "publicar": true, 
 
 </script>
 <!--/FAQ-DADOS-->
+<!--MCP-VIVO-->
+<script>
+/* MCP trabalhando: janela própria, interativa, com cara de trabalho acontecendo ao vivo.
+   Auto-contida (injeta o próprio CSS). Uso: window.abrirMcpVivo(). Idioma: document.documentElement.lang.
+   Mesmo arquivo no site e no programa de computador. Os nomes das ferramentas e das skills são os reais. */
+(function(){
+"use strict";
+const EX=[
+ {pt:"Quanto devo cobrar pelo meu serviço?",en:"How much should I charge for my service?",
+  c:["analise-de-precos-da-concorrencia","definicao-de-preco","proposta-comercial","ds-preco-sem-prejuizo"],ok:"definicao-de-preco",
+  pas:{pt:["Liste seus custos reais","Escolha a margem desejada","Compare com o mercado"],en:["List your real costs","Pick the margin you want","Compare with the market"]}},
+ {pt:"Preciso prever o caixa dos próximos meses",en:"I need to forecast cash for the coming months",
+  c:["plano-para-sair-das-dividas","revisao-de-planilha","projecao-de-caixa","resumo-diario-de-vendas"],ok:"projecao-de-caixa",
+  pas:{pt:["Junte entradas e saídas","Projete mês a mês","Marque os meses de risco"],en:["Gather income and expenses","Project month by month","Flag the risky months"]}},
+ {pt:"Quero deixar a tela do meu app mais bonita",en:"I want my app screen to look better",
+  c:["critica-de-design","design-de-interface","ds-design-lux","sistema-de-design"],ok:"ds-design-lux",
+  pas:{pt:["Defina a direção em uma frase","Ajuste cor, letra e espaço","Teste claro, escuro e celular"],en:["Set the direction in one sentence","Tune color, type and space","Test light, dark and phone"]}}
+];
+const T={
+ pt:{t:"O MCP trabalhando",sub:"Veja o caminho de um pedido, ao vivo.",fechar:"Fechar",ia:"Sua IA",mcp:"Tomada MCP",sk:"Skillarium",pause:"Pausar",play:"Continuar",rep:"Repetir",passo:"Próximo passo",
+  pen:"pensando…",usa:"Vou usar a skill",usa2:"e seguir o passo a passo:",test:"testada",desc:"não serve",serve:"serve",
+  st:["Você pede","A IA chama a ferramenta","O Skillarium procura","Só a skill testada volta","A IA trabalha com ela"],
+  ex:"Escolha um pedido:",res:"1 skill testada · passo a passo"},
+ en:{t:"MCP at work",sub:"Watch a request travel, live.",fechar:"Close",ia:"Your AI",mcp:"MCP plug",sk:"Skillarium",pause:"Pause",play:"Resume",rep:"Replay",passo:"Next step",
+  pen:"thinking…",usa:"I will use the skill",usa2:"and follow its steps:",test:"tested",desc:"not a fit",serve:"fits",
+  st:["You ask","The AI calls the tool","Skillarium searches","Only the tested skill returns","The AI works with it"],
+  ex:"Pick a request:",res:"1 tested skill · step by step"}
+};
+const css=`
+.mv{width:min(1040px,calc(100vw - 24px));max-height:calc(100dvh - 24px);padding:0;border:1px solid var(--line,#26404c);border-radius:22px;background:var(--bg,#08131d);color:var(--fg,#eef3f4);overflow:auto;box-shadow:0 30px 80px -20px rgba(0,0,0,.7)}
+.mv::backdrop{background:rgba(4,10,16,.72);backdrop-filter:blur(4px)}
+.mv *{box-sizing:border-box}
+.mv-in{display:grid;gap:16px;padding:clamp(14px,3vw,26px)}
+.mv-top{display:flex;justify-content:space-between;gap:12px;align-items:start}
+.mv h2{font-family:var(--display,Georgia,serif);font-weight:400;font-size:clamp(26px,4vw,38px);line-height:1.1;margin:0}
+.mv-sub{color:var(--muted,#a8c0ca);font-size:14.5px;margin:4px 0 0}
+.mv button{font:inherit;color:inherit;cursor:pointer;min-height:44px;min-width:44px;border-radius:999px;border:1px solid var(--line,#26404c);background:transparent;padding:0 16px}
+.mv button:hover,.mv button:focus-visible{border-color:var(--accent,#dbc293)}
+.mv button[aria-pressed="true"]{background:var(--soft,rgba(219,194,147,.14));border-color:var(--accent,#dbc293)}
+.mv-x{width:44px;padding:0!important;font-size:20px;line-height:1}
+.mv-ex{display:flex;gap:8px;flex-wrap:wrap;align-items:center;font-size:13px;color:var(--muted,#a8c0ca)}
+.mv-ex button{font-size:13.5px;text-align:left;border-radius:14px;padding:6px 14px}
+.mv-passos{display:flex;gap:6px;flex-wrap:wrap;font-family:var(--mono,monospace);font-size:11px;letter-spacing:.08em;text-transform:uppercase}
+.mv-passos span{padding:5px 10px;border-radius:999px;border:1px solid var(--line,#26404c);color:var(--muted,#a8c0ca);transition:all .25s}
+.mv-passos span.on{color:var(--accent,#dbc293);border-color:var(--accent,#dbc293);background:var(--soft,rgba(219,194,147,.14))}
+.mv-cena{position:relative;display:grid;grid-template-columns:1fr;gap:14px}
+@media(min-width:820px){.mv-cena{grid-template-columns:1fr 1.15fr 1fr;gap:22px}}
+.mv-col{border:1px solid var(--line,#26404c);border-radius:18px;background:var(--panel,rgba(16,35,48,.86));padding:14px;min-height:190px;display:grid;gap:10px;align-content:start;transition:border-color .3s,box-shadow .3s}
+.mv-col.ativa{border-color:var(--accent,#dbc293);box-shadow:0 0 0 1px var(--accent,#dbc293) inset,0 0 28px -8px var(--accent,#dbc293)}
+.mv-col>b{font-family:var(--mono,monospace);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent,#dbc293);font-weight:400}
+.mv-bolha{padding:10px 12px;border-radius:14px 14px 14px 4px;background:var(--soft,rgba(219,194,147,.14));font-size:15px;line-height:1.45;min-height:44px;overflow-wrap:anywhere}
+.mv-bolha.ia{border-radius:14px 14px 4px 14px;background:transparent;border:1px solid var(--line,#26404c)}
+.mv-cur::after{content:"";display:inline-block;width:7px;height:1em;margin-left:2px;vertical-align:-2px;background:var(--accent,#dbc293);animation:mv-pisca 1s steps(1) infinite}
+@keyframes mv-pisca{50%{opacity:0}}
+.mv-lista{display:grid;gap:5px;margin:0;padding:0;list-style:none;font-size:13.5px}
+.mv-lista li{opacity:0;transform:translateY(4px);transition:all .3s}
+.mv-lista li.on{opacity:1;transform:none}
+.mv-lista li::before{content:"○ ";color:var(--accent,#dbc293)}
+.mv-lista li.ok::before{content:"✓ "}
+.mv-term{font-family:var(--mono,ui-monospace,monospace);font-size:12.5px;line-height:1.55;background:rgba(0,0,0,.28);border:1px solid var(--line,#26404c);border-radius:12px;padding:10px 12px;min-height:140px;overflow-wrap:anywhere;color:#cfe1e6}
+.mv-term div{white-space:pre-wrap}
+.mv-term .p{color:var(--accent,#dbc293)}.mv-term .k{color:#86b592}.mv-term .m{color:var(--muted,#a8c0ca)}
+.mv-cards{display:grid;gap:7px;position:relative}
+.mv-card{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:9px 12px;border:1px solid var(--line,#26404c);border-radius:12px;font-family:var(--mono,monospace);font-size:12px;opacity:0;transform:translateY(6px);transition:all .35s;overflow-wrap:anywhere}
+.mv-card.on{opacity:1;transform:none}
+.mv-card.scan{border-color:var(--accent,#dbc293);background:var(--soft,rgba(219,194,147,.14))}
+.mv-card.no{opacity:.35;text-decoration:line-through;text-decoration-thickness:1px}
+.mv-card.yes{border-color:#86b592;background:rgba(134,181,146,.14);box-shadow:0 0 22px -8px #86b592}
+.mv-card small{font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:#86b592;white-space:nowrap}
+.mv-lupa{position:absolute;right:6px;width:30px;height:30px;color:var(--accent,#dbc293);pointer-events:none;opacity:0;transition:top .4s ease,opacity .3s;filter:drop-shadow(0 0 6px rgba(219,194,147,.5))}
+.mv-lupa svg{width:100%;height:100%;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round}
+.mv-pac{position:absolute;left:0;top:0;width:14px;height:14px;margin:-7px 0 0 -7px;border-radius:50%;background:var(--accent,#dbc293);box-shadow:0 0 18px 4px rgba(219,194,147,.6);opacity:0;transition:transform .8s cubic-bezier(.4,.1,.2,1),opacity .3s;pointer-events:none;z-index:3}
+.mv-ctrl{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.mv-leg{margin-left:auto;font-size:13.5px;color:var(--muted,#a8c0ca)}
+@media (prefers-reduced-motion:reduce){.mv *{transition:none!important;animation:none!important}.mv-card,.mv-lista li{opacity:1;transform:none}}
+`;
+let dlg,st,run=0,paused=false,stepping=false,ex=0;
+const L=()=>(document.documentElement.lang||"").toLowerCase().startsWith("en")?"en":"pt";
+const q=(s)=>dlg.querySelector(s);
+const esc=s=>String(s).replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
+const reduz=()=>matchMedia("(prefers-reduced-motion: reduce)").matches;
+const lupaSvg='<svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="27" cy="27" r="16"/><path d="m39 39 16 16"/><path d="M27 20v14M20 27h14"/></svg>';
+function montar(){
+  if(dlg)return;
+  const s=document.createElement("style");s.textContent=css;document.head.appendChild(s);
+  dlg=document.createElement("dialog");dlg.className="mv";dlg.setAttribute("aria-labelledby","mv-t");
+  dlg.innerHTML=`<div class="mv-in"><div class="mv-top"><div><h2 id="mv-t"></h2><p class="mv-sub"></p></div><button type="button" class="mv-x" aria-label="">✕</button></div>
+  <div class="mv-ex" role="group"><span class="mv-exl"></span></div>
+  <div class="mv-passos" aria-hidden="true"></div>
+  <div class="mv-cena"><div class="mv-pac" id="mv-pac"></div>
+   <div class="mv-col" data-c="ia"><b></b><div class="mv-bolha" data-r="pedido"></div><div class="mv-bolha ia" data-r="resp" hidden></div><ul class="mv-lista" data-r="lista"></ul></div>
+   <div class="mv-col" data-c="mcp"><b></b><div class="mv-term" data-r="term" aria-label="log"></div></div>
+   <div class="mv-col" data-c="sk"><b></b><div class="mv-cards" data-r="cards"><div class="mv-lupa" data-r="lupa">${lupaSvg}</div></div></div></div>
+  <div class="mv-ctrl"><button type="button" data-a="pause" aria-pressed="false"></button><button type="button" data-a="passo"></button><button type="button" data-a="rep"></button><span class="mv-leg" aria-live="polite" data-r="leg"></span></div></div>`;
+  document.body.appendChild(dlg);
+  dlg.addEventListener("close",()=>{run++});
+  dlg.addEventListener("click",e=>{if(e.target===dlg)dlg.close()});
+  q(".mv-x").onclick=()=>dlg.close();
+  dlg.querySelector('[data-a="pause"]').onclick=()=>{paused=!paused;stepping=false;rotular()};
+  dlg.querySelector('[data-a="passo"]').onclick=()=>{paused=true;stepping=true;rotular()};
+  dlg.querySelector('[data-a="rep"]').onclick=()=>comecar();
+}
+function rotular(){
+  const t=T[L()];
+  q(".mv-x").setAttribute("aria-label",t.fechar);
+  q("#mv-t").textContent=t.t;q(".mv-sub").textContent=t.sub;q(".mv-exl").textContent=t.ex;
+  dlg.querySelectorAll(".mv-col").forEach(c=>c.querySelector("b").textContent=t[c.dataset.c]);
+  const pb=dlg.querySelector('[data-a="pause"]');pb.textContent=paused?"▶ "+t.play:"❚❚ "+t.pause;pb.setAttribute("aria-pressed",paused);
+  dlg.querySelector('[data-a="passo"]').textContent="⏭ "+t.passo;dlg.querySelector('[data-a="rep"]').textContent="↻ "+t.rep;
+  const ps=q(".mv-passos");if(!ps.children.length)t.st.forEach((x,i)=>{const sp=document.createElement("span");sp.textContent=(i+1)+" · "+x;ps.appendChild(sp)});
+  else t.st.forEach((x,i)=>ps.children[i].textContent=(i+1)+" · "+x);
+  const ee=q(".mv-ex");ee.querySelectorAll("button").forEach(b=>b.remove());
+  EX.forEach((e,i)=>{const b=document.createElement("button");b.type="button";b.textContent=e[L()];b.setAttribute("aria-pressed",i===ex);b.onclick=()=>{ex=i;rotular();comecar()};ee.appendChild(b)});
+}
+const R=n=>q(`[data-r="${n}"]`);
+function marcar(i){const ps=q(".mv-passos");[...ps.children].forEach((x,j)=>x.classList.toggle("on",j===i));q('[data-r="leg"]').textContent=T[L()].st[i]||""}
+function ativar(c){dlg.querySelectorAll(".mv-col").forEach(x=>x.classList.toggle("ativa",x.dataset.c===c))}
+function pac(de,para,mostrar){
+  const p=q("#mv-pac"),cena=q(".mv-cena"),a=q(`[data-c="${de}"]`).getBoundingClientRect(),b=q(`[data-c="${para}"]`).getBoundingClientRect(),c=cena.getBoundingClientRect();
+  const col=L()&&matchMedia("(min-width:820px)").matches;
+  const pt=r=>col?[r.left-c.left+r.width/2,r.top-c.top+34]:[r.left-c.left+r.width/2,r.top-c.top+r.height/2];
+  const [x0,y0]=pt(a),[x1,y1]=pt(b);
+  p.style.transition="none";p.style.transform=`translate(${x0}px,${y0}px)`;p.style.opacity=mostrar?1:0;void p.offsetWidth;
+  p.style.transition="";p.style.transform=`translate(${x1}px,${y1}px)`;
+}
+function pacOff(){q("#mv-pac").style.opacity=0}
+const sleep=async(ms,id)=>{const f=Date.now()+ms;while(Date.now()<f){if(id!==run)throw 0;await new Promise(r=>setTimeout(r,30));if(paused&&!stepping){const d=Date.now();while(paused&&!stepping){if(id!==run)throw 0;await new Promise(r=>setTimeout(r,60))}}}};
+async function gate(id){if(stepping&&paused){stepping=false;while(paused&&!stepping){if(id!==run)throw 0;await new Promise(r=>setTimeout(r,60))}}}
+async function digitar(el,txt,id,v){if(reduz()){el.textContent=txt;return}el.classList.add("mv-cur");for(let i=1;i<=txt.length;i++){el.textContent=txt.slice(0,i);await sleep(v||28,id)}el.classList.remove("mv-cur")}
+async function linha(term,html,id,rapido){const d=document.createElement("div");term.appendChild(d);const plain=html.replace(/<[^>]+>/g,"").replace(/&lt;/g,"<").replace(/&gt;/g,">").replace(/&amp;/g,"&");
+  if(reduz()||rapido){d.innerHTML=html;return}
+  d.classList.add("mv-cur");for(let i=1;i<=plain.length;i+=2){d.textContent=plain.slice(0,i);await sleep(16,id)}d.classList.remove("mv-cur");d.innerHTML=html}
+async function comecar(){
+  const id=++run,t=T[L()],e=EX[ex],l=L();paused=false;stepping=false;rotular();
+  const ped=R("pedido"),resp=R("resp"),lista=R("lista"),term=R("term"),cards=R("cards"),lupa=R("lupa");
+  ped.textContent="";resp.hidden=true;resp.textContent="";lista.innerHTML="";term.innerHTML="";[...cards.querySelectorAll(".mv-card")].forEach(c=>c.remove());lupa.style.opacity=0;pacOff();ativar("");marcar(-1);
+  try{
+    marcar(0);ativar("ia");await digitar(ped,e[l],id);await sleep(500,id);await gate(id);
+    marcar(1);const pen=document.createElement("div");pen.className="mv-bolha ia";pen.textContent=t.pen;
+    await linha(term,`<span class="m">${esc(t.mcp)} ✓</span>`,id,true);
+    pac("ia","mcp",1);await sleep(900,id);pen.remove();ativar("mcp");
+    await linha(term,`<span class="p">→</span> <span class="k">buscar_skills</span>({ tarefa: "${esc(e[l])}" })`,id);await sleep(500,id);await gate(id);
+    marcar(2);pac("mcp","sk",1);await sleep(900,id);pacOff();ativar("sk");
+    const lst=e.c.slice();const cs=lst.map(n=>{const d=document.createElement("div");d.className="mv-card";d.innerHTML=`<span>${esc(n)}</span><small></small>`;cards.appendChild(d);return d});
+    for(const c of cs){await sleep(reduz()?0:220,id);c.classList.add("on")}
+    lupa.style.opacity=1;
+    for(let i=0;i<cs.length;i++){const c=cs[i];c.classList.add("scan");lupa.style.top=(c.offsetTop+(c.offsetHeight-30)/2)+"px";await sleep(750,id);c.classList.remove("scan");
+      if(lst[i]===e.ok){c.classList.add("yes");c.querySelector("small").textContent="✓ "+t.test}else{c.classList.add("no")}}
+    lupa.style.opacity=0;await sleep(500,id);await gate(id);
+    marcar(3);ativar("mcp");pac("sk","mcp",1);await sleep(800,id);
+    await linha(term,`<span class="p">←</span> <span class="k">ler_skill</span>({ id: "${esc(e.ok)}" })`,id);
+    await linha(term,`<span class="m">${esc(t.res)}</span>`,id);await sleep(400,id);await gate(id);
+    marcar(4);pac("mcp","ia",1);await sleep(800,id);pacOff();ativar("ia");
+    resp.hidden=false;await digitar(resp,`${t.usa} «${e.ok}» ${t.usa2}`,id);
+    for(const p of e.pas[l]){const li=document.createElement("li");li.textContent=p;lista.appendChild(li);void li.offsetWidth;li.classList.add("on");await sleep(500,id);li.classList.add("ok");await sleep(300,id)}
+    ativar("");q('[data-r="leg"]').textContent="✓";
+  }catch(x){if(x!==0)throw x}
+}
+window.abrirMcpVivo=function(){
+  montar();paused=false;stepping=false;
+  if(!dlg.open)dlg.showModal();
+  comecar();
+};
+})();
+
+</script>
+<!--/MCP-VIVO-->
