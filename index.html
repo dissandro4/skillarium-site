@@ -373,6 +373,7 @@ Memorando de 1 página.</button>
     <button type="button" class="fer" aria-expanded="false"><span class="fer-ic i-alq"><svg viewBox="0 0 64 64" aria-hidden="true"><path d="M26 7h12"/><path d="M28 7v18L13 50c-2 4 0 8 5 8h28c5 0 7-4 5-8L36 25V7"/><path d="M19 42h26"/><circle class="bolha" cx="30" cy="35" r="2"/><circle class="bolha" cx="37" cy="31" r="1.5"/><path d="M48 12v8M44 16h8"/></svg></span><b>Alquimista</b><small data-pt="Traduz e prova" data-en="Translates and proves">Traduz e prova</small><p data-pt="Traduz, adapta e testa cada skill. Só quem passa vira skill aprovada." data-en="Translates, adapts and tests every skill. Only those that pass become approved.">Traduz, adapta e testa cada skill. Só quem passa vira skill aprovada.</p></button>
     <button type="button" class="fer" aria-expanded="false"><span class="fer-ic i-mat"><svg viewBox="0 0 64 64" aria-hidden="true"><path d="M19 7h26M19 57h26"/><path d="M22 7c0 15 10 17 10 25S22 42 22 57M42 7c0 15-10 17-10 25s10 10 10 25"/><path d="M27 13h10M28 51h8"/></svg></span><b>Matusalém</b><small data-pt="Biblioteca e arquivo" data-en="Library and archive">Biblioteca e arquivo</small><p data-pt="Guarda tudo o que já passou por aqui, inclusive o que saiu, sem nunca apagar." data-en="Keeps everything that ever passed through, including what was retired, never deleting.">Guarda tudo o que já passou por aqui, inclusive o que saiu, sem nunca apagar.</p></button>
   </div>
+  <div class="mv-abrir"><button type="button" class="btn primary" id="av-abrir" data-pt="▶ Ver o Alquimista trabalhando" data-en="▶ Watch the Alchemist work">▶ Ver o Alquimista trabalhando</button><span class="muted" data-pt="Uma skill de verdade sendo provada, passo a passo." data-en="A real skill being proven, step by step.">Uma skill de verdade sendo provada, passo a passo.</span></div>
   <p class="fer-dica muted" data-pt="Cada símbolo é desenhado à mão em linha fina, como as constelações do céu." data-en="Each symbol is hand-drawn in a fine line, like the constellations in the sky.">Cada símbolo é desenhado à mão em linha fina, como as constelações do céu.</p>
 </div></section>
 
@@ -556,6 +557,7 @@ const REDUZ=matchMedia("(prefers-reduced-motion: reduce)").matches;
 })();
 
 document.getElementById("mv-abrir").addEventListener("click",()=>window.abrirMcpVivo());
+document.getElementById("av-abrir").addEventListener("click",()=>window.abrirAlquimistaVivo());
 
 /* ---------- céu: estrelas + constelações (sem nome) + o caranguejo (um só) ---------- */
 // Cada figura: [largura, altura, cadeias de pontos 0..1]. Zodíaco + constelações conhecidas.
@@ -825,7 +827,7 @@ let salvo=null;try{salvo=localStorage.getItem("lang")}catch(e){}
 setLang(salvo||((navigator.language||"pt").startsWith("pt")?"pt":"en"));
 </script>
 
-<!--VERSAO--><script>window.SKILLARIUM_VERSAO="20261113-091913";</script><!--/VERSAO-->
+<!--VERSAO--><script>window.SKILLARIUM_VERSAO="20261113-092520";</script><!--/VERSAO-->
 <!--FAQ-DADOS-->
 <script>
 // Skillarium — cérebro de respostas (11/nov/2026). Acha, no FAQ, a melhor resposta para uma pergunta escrita do jeito da pessoa,
@@ -1213,8 +1215,8 @@ var G={
  sher:'<circle cx="27" cy="27" r="16"/><path d="m39 39 16 16"/><path d="M27 20v14M20 27h14"/>',
  top:'<path d="M32 5c8 7 12 17 9 30H23c-3-13 1-23 9-30Z"/><circle cx="32" cy="21" r="4"/><path d="M23 29l-9 9v9l9-6M41 29l9 9v9l-9-6"/><path d="M28 39c0 6 2 10 4 15 2-5 4-9 4-15"/>'
 };
-var RE=[[/Matusal[ée]m/,'mat'],[/Farejador|Scout/,'far'],[/Alquimista|Alchemist/,'alq'],[/^Sherlock/,'sher'],[/^Top 40/,'top']];
-var SEL='h1,h2,h3,h4,summary,legend,.tab,button.text-link,a.text-link,.eyebrow';
+var RE=[[/Matusal[ée]m/,'mat'],[/Farejador|Scout/,'far'],[/Alquimista|Alchemist/,'alq'],[/Sherlock/,'sher'],[/Top 40/,'top']];
+var SEL='h1,h2,h3,h4,summary,legend,.tab,button,a.text-link,.eyebrow,b,strong,span.small,.small';
 var css='.sim-ic{display:inline-flex;vertical-align:-.12em;margin-right:.45em;color:var(--accent,#dbc293)}.sim-ic svg{width:1em;height:1em;overflow:visible;fill:none;stroke:currentColor;stroke-width:3.2;stroke-linecap:round;stroke-linejoin:round}h1 .sim-ic svg,h2 .sim-ic svg{width:.8em;height:.8em}h1 .sim-ic,h2 .sim-ic{vertical-align:-.04em}';
 var st=document.createElement('style');st.textContent=css;document.head.appendChild(st);
 function um(el){
@@ -1233,3 +1235,167 @@ new MutationObserver(pedir).observe(document.body,{childList:true,subtree:true})
 
 </script>
 <!--/SIMBOLOS-->
+<!--ALQ-VIVO-->
+<script>
+/* O Alquimista trabalhando: janela interativa. Dados de exemplo reais do registro de testes (testes-nivel2.jsonl).
+   Auto-contida. Uso: window.abrirAlquimistaVivo(). Idioma: document.documentElement.lang. */
+(function(){
+"use strict";
+const EX=[
+ {ok:1,orig:"cash-flow-snapshot",aut:"Anthropic, PBC",lic:"Apache-2.0",nome:"projecao-de-caixa",
+  tarefa:{pt:"Gráfica fictícia: saldo R$ 8.000, vendas de R$ 2.000 por semana, 4 semanas.",en:"Fictional print shop: balance R$ 8,000, sales of R$ 2,000 a week, 4 weeks."},
+  crit:{pt:["Tabela semanal com contas corretas","Dois cenários e semanas de risco","Ações com efeito em reais"],en:["Weekly table with correct math","Two scenarios and risky weeks","Actions with an effect in money"]},
+  saida:{pt:"Semana 4 do cenário apertado fica negativa (−R$ 3.000). Antecipar recebíveis leva a R$ 9.320.",en:"Week 4 of the tight scenario goes negative (−R$ 3,000). Advancing receivables lifts it to R$ 9,320."}},
+ {ok:0,orig:"tiktok-shop-ads",aut:"—",lic:"—",nome:"tiktok-shop-ads",
+  motivo:{pt:"Depende de conta do TikTok Shop e de anúncios pagos.",en:"Depends on a TikTok Shop account and paid ads."}},
+ {ok:0,orig:"plan-payroll",aut:"—",lic:"—",nome:"plan-payroll",
+  motivo:{pt:"Depende de folha e sistemas de RH conectados que não vêm junto.",en:"Depends on payroll and HR systems that do not come with it."}}
+];
+const T={
+ pt:{t:"O Alquimista trabalhando",sub:"Veja uma skill ser provada, do começo ao fim.",fechar:"Fechar",far:"Chega do Farejador",alq:"Bancada do Alquimista",ver:"Veredito",pause:"Pausar",play:"Continuar",rep:"Repetir",passo:"Próximo passo",
+  st:["Chega da fila","Lê e confere","Traduz","Prova","Veredito"],ex:"Escolha uma skill:",lic:"licença",aut:"autor",
+  le:"lendo o original…",tr:"traduzindo para PT e EN…",trok:"PT ✓  EN ✓",cr:"3 critérios, escritos antes do teste:",ta:"tarefa de teste:",pa:"passou",nao:"não passou",
+  apr:"APROVADA",rep2:"REPROVADA",bib:"Vai para a biblioteca, pronta para o cliente.",mat:"Vai para o Matusalém, com o motivo.",mot:"Motivo:",sai:"saída:"},
+ en:{t:"The Alchemist at work",sub:"Watch a skill being proven, start to finish.",fechar:"Close",far:"Arrives from the Scout",alq:"The Alchemist's bench",ver:"Verdict",pause:"Pause",play:"Resume",rep:"Replay",passo:"Next step",
+  st:["Leaves the queue","Reads and checks","Translates","Tests","Verdict"],ex:"Pick a skill:",lic:"license",aut:"author",
+  le:"reading the original…",tr:"translating to PT and EN…",trok:"PT ✓  EN ✓",cr:"3 criteria, written before the test:",ta:"test task:",pa:"passed",nao:"failed",
+  apr:"APPROVED",rep2:"REJECTED",bib:"Goes to the library, ready for the customer.",mat:"Goes to Matusalém, with the reason.",mot:"Reason:",sai:"output:"}
+};
+const css=`
+.av{width:min(1040px,calc(100vw - 24px));max-height:calc(100dvh - 24px);padding:0;border:1px solid var(--line,#26404c);border-radius:22px;background:var(--bg,#08131d);color:var(--fg,#eef3f4);overflow:auto;box-shadow:0 30px 80px -20px rgba(0,0,0,.7)}
+.av::backdrop{background:rgba(4,10,16,.72);backdrop-filter:blur(4px)}
+.av *{box-sizing:border-box}
+.av-in{display:grid;gap:16px;padding:clamp(14px,3vw,26px)}
+.av-top{display:flex;justify-content:space-between;gap:12px;align-items:start}
+.av h2{font-family:var(--display,Georgia,serif);font-weight:400;font-size:clamp(26px,4vw,38px);line-height:1.1;margin:0}
+.av-sub{color:var(--muted,#a8c0ca);font-size:14.5px;margin:4px 0 0}
+.av button{font:inherit;color:inherit;cursor:pointer;min-height:44px;min-width:44px;border-radius:999px;border:1px solid var(--line,#26404c);background:transparent;padding:0 16px}
+.av button:hover,.av button:focus-visible{border-color:var(--accent,#dbc293)}
+.av button[aria-pressed="true"]{background:var(--soft,rgba(219,194,147,.14));border-color:var(--accent,#dbc293)}
+.av-x{width:44px;padding:0!important;font-size:20px;line-height:1}
+.av-ex{display:flex;gap:8px;flex-wrap:wrap;align-items:center;font-size:13px;color:var(--muted,#a8c0ca)}
+.av-ex button{font-size:13.5px;text-align:left;border-radius:14px;padding:6px 14px}
+.av-passos{display:flex;gap:6px;flex-wrap:wrap;font-family:var(--mono,monospace);font-size:11px;letter-spacing:.08em;text-transform:uppercase}
+.av-passos span{padding:5px 10px;border-radius:999px;border:1px solid var(--line,#26404c);color:var(--muted,#a8c0ca);transition:all .25s}
+.av-passos span.on{color:var(--accent,#dbc293);border-color:var(--accent,#dbc293);background:var(--soft,rgba(219,194,147,.14))}
+.av-cena{position:relative;display:grid;grid-template-columns:1fr;gap:14px}
+@media(min-width:820px){.av-cena{grid-template-columns:1fr 1.15fr 1fr;gap:22px}}
+.av-col{border:1px solid var(--line,#26404c);border-radius:18px;background:var(--panel,rgba(16,35,48,.86));padding:14px;min-height:190px;display:grid;gap:10px;align-content:start;transition:border-color .3s,box-shadow .3s}
+.av-col.ativa{border-color:var(--accent,#dbc293);box-shadow:0 0 0 1px var(--accent,#dbc293) inset,0 0 28px -8px var(--accent,#dbc293)}
+.av-col>b{font-family:var(--mono,monospace);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent,#dbc293);font-weight:400}
+.av-bolha{padding:10px 12px;border-radius:14px 14px 14px 4px;background:var(--soft,rgba(219,194,147,.14));font-size:15px;line-height:1.45;min-height:44px;overflow-wrap:anywhere}
+.av-bolha.ia{border-radius:14px 14px 4px 14px;background:transparent;border:1px solid var(--line,#26404c)}
+.av-cur::after{content:"";display:inline-block;width:7px;height:1em;margin-left:2px;vertical-align:-2px;background:var(--accent,#dbc293);animation:av-pisca 1s steps(1) infinite}
+@keyframes av-pisca{50%{opacity:0}}
+.av-lista{display:grid;gap:5px;margin:0;padding:0;list-style:none;font-size:13.5px}
+.av-lista li{opacity:0;transform:translateY(4px);transition:all .3s}
+.av-lista li.on{opacity:1;transform:none}
+.av-lista li::before{content:"○ ";color:var(--accent,#dbc293)}
+.av-lista li.ok::before{content:"✓ "}
+.av-term{font-family:var(--mono,ui-monospace,monospace);font-size:12.5px;line-height:1.55;background:rgba(0,0,0,.28);border:1px solid var(--line,#26404c);border-radius:12px;padding:10px 12px;min-height:140px;overflow-wrap:anywhere;color:#cfe1e6}
+.av-term div{white-space:pre-wrap}
+.av-term .p{color:var(--accent,#dbc293)}.av-term .k{color:#86b592}.av-term .m{color:var(--muted,#a8c0ca)}
+.av-cards{display:grid;gap:7px;position:relative}
+.av-card{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:9px 12px;border:1px solid var(--line,#26404c);border-radius:12px;font-family:var(--mono,monospace);font-size:12px;opacity:0;transform:translateY(6px);transition:all .35s;overflow-wrap:anywhere}
+.av-card.on{opacity:1;transform:none}
+.av-card.scan{border-color:var(--accent,#dbc293);background:var(--soft,rgba(219,194,147,.14))}
+.av-card.no{opacity:.35;text-decoration:line-through;text-decoration-thickness:1px}
+.av-card.yes{border-color:#86b592;background:rgba(134,181,146,.14);box-shadow:0 0 22px -8px #86b592}
+.av-card small{font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:#86b592;white-space:nowrap}
+.av-lupa{position:absolute;right:6px;width:30px;height:30px;color:var(--accent,#dbc293);pointer-events:none;opacity:0;transition:top .4s ease,opacity .3s;filter:drop-shadow(0 0 6px rgba(219,194,147,.5))}
+.av-lupa svg{width:100%;height:100%;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round}
+.av-pac{position:absolute;left:0;top:0;width:14px;height:14px;margin:-7px 0 0 -7px;border-radius:50%;background:var(--accent,#dbc293);box-shadow:0 0 18px 4px rgba(219,194,147,.6);opacity:0;transition:transform .8s cubic-bezier(.4,.1,.2,1),opacity .3s;pointer-events:none;z-index:3}
+.av-bolha.sim{border:1px solid #86b592;background:rgba(134,181,146,.14);color:#86b592;font-family:var(--mono,monospace);letter-spacing:.12em;border-radius:12px}.av-bolha.no{border:1px solid #d98b7a;background:rgba(217,139,122,.12);color:#d98b7a;font-family:var(--mono,monospace);letter-spacing:.12em;border-radius:12px}
+.av-ctrl{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.av-leg{margin-left:auto;font-size:13.5px;color:var(--muted,#a8c0ca)}
+@media (prefers-reduced-motion:reduce){.av *{transition:none!important;animation:none!important}.av-card,.av-lista li{opacity:1;transform:none}}
+`;
+let dlg,run=0,paused=false,stepping=false,ex=0;
+const L=()=>(document.documentElement.lang||"").toLowerCase().startsWith("en")?"en":"pt";
+const q=(s)=>dlg.querySelector(s);
+const esc=s=>String(s).replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
+const reduz=()=>matchMedia("(prefers-reduced-motion: reduce)").matches;
+const _x='<svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="27" cy="27" r="16"/><path d="m39 39 16 16"/><path d="M27 20v14M20 27h14"/></svg>';
+
+const frascoSvg='<svg viewBox="0 0 64 64" aria-hidden="true"><path d="M26 7h12"/><path d="M28 7v18L13 50c-2 4 0 8 5 8h28c5 0 7-4 5-8L36 25V7"/><path d="M19 42h26"/><circle cx="30" cy="35" r="2"/><circle cx="37" cy="31" r="1.5"/></svg>';
+function montar(){
+  if(dlg)return;
+  const s=document.createElement("style");s.textContent=css;document.head.appendChild(s);
+  dlg=document.createElement("dialog");dlg.className="av";dlg.setAttribute("aria-labelledby","av-t");
+  dlg.innerHTML=`<div class="av-in"><div class="av-top"><div><h2 id="av-t"></h2><p class="av-sub"></p></div><button type="button" class="av-x" aria-label="">✕</button></div>
+  <div class="av-ex" role="group"><span class="av-exl"></span></div>
+  <div class="av-passos" aria-hidden="true"></div>
+  <div class="av-cena"><div class="av-pac" id="av-pac"></div>
+   <div class="av-col" data-c="far"><b></b><div class="av-cards" data-r="cand"></div></div>
+   <div class="av-col" data-c="alq"><b></b><div class="av-term" data-r="term"></div></div>
+   <div class="av-col" data-c="ver"><b></b><div class="av-bolha" data-r="selo" hidden></div><div class="av-bolha ia" data-r="dest" hidden></div></div></div>
+  <div class="av-ctrl"><button type="button" data-a="pause" aria-pressed="false"></button><button type="button" data-a="passo"></button><button type="button" data-a="rep"></button><span class="av-leg" aria-live="polite" data-r="leg"></span></div></div>`;
+  document.body.appendChild(dlg);
+  dlg.addEventListener("close",()=>{run++});
+  dlg.addEventListener("click",e=>{if(e.target===dlg)dlg.close()});
+  q(".av-x").onclick=()=>dlg.close();
+  dlg.querySelector('[data-a="pause"]').onclick=()=>{paused=!paused;stepping=false;rotular()};
+  dlg.querySelector('[data-a="passo"]').onclick=()=>{paused=true;stepping=true;rotular()};
+  dlg.querySelector('[data-a="rep"]').onclick=()=>comecar();
+}
+function rotular(){
+  const t=T[L()];
+  q(".av-x").setAttribute("aria-label",t.fechar);
+  q("#av-t").textContent=t.t;q(".av-sub").textContent=t.sub;q(".av-exl").textContent=t.ex;
+  dlg.querySelectorAll(".av-col").forEach(c=>c.querySelector("b").textContent=t[c.dataset.c]);
+  const pb=dlg.querySelector('[data-a="pause"]');pb.textContent=paused?"▶ "+t.play:"❚❚ "+t.pause;pb.setAttribute("aria-pressed",paused);
+  dlg.querySelector('[data-a="passo"]').textContent="⏭ "+t.passo;dlg.querySelector('[data-a="rep"]').textContent="↻ "+t.rep;
+  const ps=q(".av-passos");if(!ps.children.length)t.st.forEach((x,i)=>{const sp=document.createElement("span");sp.textContent=(i+1)+" · "+x;ps.appendChild(sp)});
+  else t.st.forEach((x,i)=>ps.children[i].textContent=(i+1)+" · "+x);
+  const ee=q(".av-ex");ee.querySelectorAll("button").forEach(b=>b.remove());
+  EX.forEach((e,i)=>{const b=document.createElement("button");b.type="button";b.textContent=e.orig;b.setAttribute("aria-pressed",i===ex);b.onclick=()=>{ex=i;rotular();comecar()};ee.appendChild(b)});
+}
+const R=n=>q(`[data-r="${n}"]`);
+function marcar(i){const ps=q(".av-passos");[...ps.children].forEach((x,j)=>x.classList.toggle("on",j===i));q('[data-r="leg"]').textContent=T[L()].st[i]||""}
+function ativar(c){dlg.querySelectorAll(".av-col").forEach(x=>x.classList.toggle("ativa",x.dataset.c===c))}
+function pac(de,para,mostrar){
+  const p=q("#av-pac"),cena=q(".av-cena"),a=q(`[data-c="${de}"]`).getBoundingClientRect(),b=q(`[data-c="${para}"]`).getBoundingClientRect(),c=cena.getBoundingClientRect();
+  const col=L()&&matchMedia("(min-width:820px)").matches;
+  const pt=r=>col?[r.left-c.left+r.width/2,r.top-c.top+34]:[r.left-c.left+r.width/2,r.top-c.top+r.height/2];
+  const [x0,y0]=pt(a),[x1,y1]=pt(b);
+  p.style.transition="none";p.style.transform=`translate(${x0}px,${y0}px)`;p.style.opacity=mostrar?1:0;void p.offsetWidth;
+  p.style.transition="";p.style.transform=`translate(${x1}px,${y1}px)`;
+}
+function pacOff(){q("#av-pac").style.opacity=0}
+const sleep=async(ms,id)=>{const f=Date.now()+ms;while(Date.now()<f){if(id!==run)throw 0;await new Promise(r=>setTimeout(r,30));if(paused&&!stepping){const d=Date.now();while(paused&&!stepping){if(id!==run)throw 0;await new Promise(r=>setTimeout(r,60))}}}};
+async function gate(id){if(stepping&&paused){stepping=false;while(paused&&!stepping){if(id!==run)throw 0;await new Promise(r=>setTimeout(r,60))}}}
+async function digitar(el,txt,id,v){if(reduz()){el.textContent=txt;return}el.classList.add("av-cur");for(let i=1;i<=txt.length;i++){el.textContent=txt.slice(0,i);await sleep(v||28,id)}el.classList.remove("av-cur")}
+async function linha(term,html,id,rapido){const d=document.createElement("div");term.appendChild(d);const plain=html.replace(/<[^>]+>/g,"").replace(/&lt;/g,"<").replace(/&gt;/g,">").replace(/&amp;/g,"&");
+  if(reduz()||rapido){d.innerHTML=html;return}
+  d.classList.add("av-cur");for(let i=1;i<=plain.length;i+=2){d.textContent=plain.slice(0,i);await sleep(16,id)}d.classList.remove("av-cur");d.innerHTML=html}
+async function comecar(){
+  const id=++run,t=T[L()],e=EX[ex],l=L();paused=false;stepping=false;rotular();
+  const cand=R("cand"),term=R("term"),selo=R("selo"),dest=R("dest");
+  cand.innerHTML="";term.innerHTML="";selo.hidden=true;dest.hidden=true;selo.textContent="";dest.textContent="";selo.className="av-bolha";pacOff();ativar("");marcar(-1);
+  try{
+    marcar(0);ativar("far");
+    const c=document.createElement("div");c.className="av-card";c.innerHTML=`<span>${esc(e.orig)}</span><small>${esc(e.lic)}</small>`;cand.appendChild(c);void c.offsetWidth;c.classList.add("on");
+    await sleep(900,id);pac("far","alq",1);await sleep(900,id);pacOff();await gate(id);
+    marcar(1);ativar("alq");await linha(term,`<span class="p">▸</span> ${esc(t.le)}`,id);await sleep(500,id);
+    await linha(term,`<span class="m">${esc(t.aut)}: ${esc(e.aut)} · ${esc(t.lic)}: ${esc(e.lic)}</span>`,id,true);await sleep(500,id);await gate(id);
+    if(!e.ok){
+      await linha(term,`<span class="p">✗</span> ${esc(e.motivo[l])}`,id);await sleep(700,id);await gate(id);
+      marcar(4);pac("alq","ver",1);await sleep(900,id);pacOff();ativar("ver");
+      selo.hidden=false;selo.classList.add("no");await digitar(selo,"✗ "+t.rep2,id,40);dest.hidden=false;await digitar(dest,t.mat+" "+t.mot+" "+e.motivo[l],id);
+      q('[data-r="leg"]').textContent="✗";return}
+    marcar(2);await linha(term,`<span class="p">▸</span> ${esc(t.tr)}`,id);await sleep(500,id);await linha(term,`<span class="k">${esc(t.trok)}</span>`,id,true);await sleep(600,id);await gate(id);
+    marcar(3);await linha(term,`<span class="p">▸</span> ${esc(t.cr)}`,id);
+    for(const x of e.crit[l]){await linha(term,`  ○ ${esc(x)}`,id);await sleep(250,id)}
+    await linha(term,`<span class="p">▸</span> ${esc(t.ta)} <span class="m">${esc(e.tarefa[l])}</span>`,id);await sleep(900,id);
+    await linha(term,`<span class="m">${esc(t.sai)}</span> ${esc(e.saida[l])}`,id);await sleep(700,id);
+    await linha(term,`<span class="k">✓ ${e.crit[l].length}/${e.crit[l].length} · ${esc(t.pa)}</span>`,id,true);await sleep(600,id);await gate(id);
+    marcar(4);pac("alq","ver",1);await sleep(900,id);pacOff();ativar("ver");
+    selo.hidden=false;selo.classList.add("sim");await digitar(selo,"✓ "+t.apr,id,40);dest.hidden=false;await digitar(dest,"«"+e.nome+"» · "+t.bib,id);
+    ativar("");q('[data-r="leg"]').textContent="✓";
+  }catch(x){if(x!==0)throw x}
+}
+window.abrirAlquimistaVivo=function(){montar();paused=false;stepping=false;if(!dlg.open)dlg.showModal();comecar()};
+})();
+
+</script>
+<!--/ALQ-VIVO-->
