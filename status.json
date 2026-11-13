@@ -1,11 +1,11 @@
 {
- "aprovadas": 165,
+ "aprovadas": 171,
  "meta": 400,
- "faltam": 235,
+ "faltam": 229,
  "porSemana": 13,
- "atualizado": "2026-11-12",
+ "atualizado": "2026-11-13",
  "porCategoria": {
-  "finance": 41,
+  "finance": 47,
   "automation": 20,
   "commerce": 76,
   "design": 26,
