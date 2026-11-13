@@ -212,6 +212,8 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:16px 28px;align-items:center}
 .fer p{font-size:14.5px;line-height:1.5;color:var(--muted);max-height:0;opacity:0;overflow:hidden;transition:max-height .3s ease,opacity .22s ease}
 .fer[aria-expanded="true"] p{max-height:12em;opacity:1}
 .mv-abrir{display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin:6px 0 4px}
+/* Ajuste fino 13/nov: alvos de toque */
+.sf-botao{padding:10px 16px!important;min-height:40px}
 .fer-dica{margin-top:18px;font-size:14px;color:var(--muted)}
 .fer.vivo .fer-ic svg *{stroke-dasharray:1;stroke-dashoffset:1;animation:fer-traco .9s ease forwards}
 @keyframes fer-traco{to{stroke-dashoffset:0}}
@@ -827,7 +829,7 @@ let salvo=null;try{salvo=localStorage.getItem("lang")}catch(e){}
 setLang(salvo||((navigator.language||"pt").startsWith("pt")?"pt":"en"));
 </script>
 
-<!--VERSAO--><script>window.SKILLARIUM_VERSAO="20261113-092520";</script><!--/VERSAO-->
+<!--VERSAO--><script>window.SKILLARIUM_VERSAO="20261113-093215";</script><!--/VERSAO-->
 <!--FAQ-DADOS-->
 <script>
 // Skillarium — cérebro de respostas (11/nov/2026). Acha, no FAQ, a melhor resposta para uma pergunta escrita do jeito da pessoa,
