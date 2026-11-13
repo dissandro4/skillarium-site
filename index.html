@@ -825,7 +825,7 @@ let salvo=null;try{salvo=localStorage.getItem("lang")}catch(e){}
 setLang(salvo||((navigator.language||"pt").startsWith("pt")?"pt":"en"));
 </script>
 
-<!--VERSAO--><script>window.SKILLARIUM_VERSAO="20261113-085827";</script><!--/VERSAO-->
+<!--VERSAO--><script>window.SKILLARIUM_VERSAO="20261113-091913";</script><!--/VERSAO-->
 <!--FAQ-DADOS-->
 <script>
 // Skillarium — cérebro de respostas (11/nov/2026). Acha, no FAQ, a melhor resposta para uma pergunta escrita do jeito da pessoa,
@@ -1200,3 +1200,36 @@ window.abrirMcpVivo=function(){
 
 </script>
 <!--/MCP-VIVO-->
+<!--SIMBOLOS-->
+<script>
+/* Símbolos das ferramentas em todo lugar onde o nome aparece (títulos, abas, botões, links). Linha fina.
+   Auto-contido; vale no site e no app. Não mexe onde já há ícone (svg) nem dentro de .fer (cartões do site). */
+(function(){
+"use strict";
+var G={
+ mat:'<path d="M19 7h26M19 57h26"/><path d="M22 7c0 15 10 17 10 25S22 42 22 57M42 7c0 15-10 17-10 25s10 10 10 25"/><path d="M27 13h10M28 51h8"/>',
+ far:'<path d="M24 6c1 11 3 19 3 27 0 6-9 8-9 14 0 5 6 7 12 7 7 0 13-2 13-7 0-3-3-5-7-6"/><path d="M32 46c-2-2-5-2-7 0"/><path d="M48 26c4 2 6 5 6 9"/><path d="M52 16c7 3 10 8 10 15"/>',
+ alq:'<path d="M26 7h12"/><path d="M28 7v18L13 50c-2 4 0 8 5 8h28c5 0 7-4 5-8L36 25V7"/><path d="M19 42h26"/><circle cx="30" cy="35" r="2"/><circle cx="37" cy="31" r="1.5"/><path d="M48 12v8M44 16h8"/>',
+ sher:'<circle cx="27" cy="27" r="16"/><path d="m39 39 16 16"/><path d="M27 20v14M20 27h14"/>',
+ top:'<path d="M32 5c8 7 12 17 9 30H23c-3-13 1-23 9-30Z"/><circle cx="32" cy="21" r="4"/><path d="M23 29l-9 9v9l9-6M41 29l9 9v9l-9-6"/><path d="M28 39c0 6 2 10 4 15 2-5 4-9 4-15"/>'
+};
+var RE=[[/Matusal[ée]m/,'mat'],[/Farejador|Scout/,'far'],[/Alquimista|Alchemist/,'alq'],[/^Sherlock/,'sher'],[/^Top 40/,'top']];
+var SEL='h1,h2,h3,h4,summary,legend,.tab,button.text-link,a.text-link,.eyebrow';
+var css='.sim-ic{display:inline-flex;vertical-align:-.12em;margin-right:.45em;color:var(--accent,#dbc293)}.sim-ic svg{width:1em;height:1em;overflow:visible;fill:none;stroke:currentColor;stroke-width:3.2;stroke-linecap:round;stroke-linejoin:round}h1 .sim-ic svg,h2 .sim-ic svg{width:.8em;height:.8em}h1 .sim-ic,h2 .sim-ic{vertical-align:-.04em}';
+var st=document.createElement('style');st.textContent=css;document.head.appendChild(st);
+function um(el){
+  if(el.querySelector('.sim-ic,svg')||el.closest('.fer,.mv'))return;
+  var t=(el.textContent||'').trim();if(!t||t.length>70)return;
+  for(var i=0;i<RE.length;i++)if(RE[i][0].test(t)){
+    var s=document.createElement('span');s.className='sim-ic';s.setAttribute('aria-hidden','true');
+    s.innerHTML='<svg viewBox="0 0 64 64">'+G[RE[i][1]]+'</svg>';el.insertBefore(s,el.firstChild);return}
+}
+var ag=false;
+function varrer(){ag=false;document.querySelectorAll(SEL).forEach(um)}
+function pedir(){if(!ag){ag=true;requestAnimationFrame(varrer)}}
+varrer();
+new MutationObserver(pedir).observe(document.body,{childList:true,subtree:true});
+})();
+
+</script>
+<!--/SIMBOLOS-->
