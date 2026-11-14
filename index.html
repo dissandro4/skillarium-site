@@ -342,6 +342,18 @@ Memorando de 1 página.</button>
     <div class="gate panel"><span class="n">II</span><h3 data-pt="Teste" data-en="Test">Teste</h3><p class="muted" data-pt="A skill roda numa tarefa de exemplo e a resposta é conferida." data-en="The skill runs on a sample task and the answer is checked.">A skill roda numa tarefa de exemplo e a resposta é conferida.</p><span class="state pass" data-pt="✓ testada" data-en="✓ tested">✓ testada</span></div>
     <div class="gate panel"><span class="n">III</span><h3 data-pt="Especialista" data-en="Expert">Especialista</h3><p class="muted" data-pt="Testadores convidados usam no trabalho e dão o selo às melhores." data-en="Invited testers use it at work and seal the best ones.">Testadores convidados usam no trabalho e dão o selo às melhores.</p><span class="state" data-pt="nas melhores" data-en="on the best">nas melhores</span></div>
   </div>
+  <!--CURADORIA-->
+  <style>.cura{margin-top:14px;padding:clamp(22px,3.5vw,32px);display:grid;gap:16px}.cura h3{margin:0}.cura ul{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr;gap:14px 28px}@media (min-width:700px){.cura ul{grid-template-columns:1fr 1fr}}.cura li{display:grid;gap:4px;min-width:0}.cura li b{font-weight:500}.cura li b::before{content:"✦  ";color:var(--accent)}.cura li span{font-size:15px;line-height:1.5}</style>
+  <div class="cura panel">
+    <h3 data-pt="Curadoria séria, com respeito a quem criou." data-en="Serious curation, with respect for the people who made it.">Curadoria séria, com respeito a quem criou.</h3>
+    <ul>
+      <li><b data-pt="Fonte limpa" data-en="Clean source">Fonte limpa</b><span class="muted" data-pt="Só licenças que permitem uso comercial (MIT, Apache-2.0, BSD, CC0, CC-BY), com crédito e link do autor." data-en="Only licences that allow commercial use (MIT, Apache-2.0, BSD, CC0, CC-BY), with credit and a link to the author.">Só licenças que permitem uso comercial (MIT, Apache-2.0, BSD, CC0, CC-BY), com crédito e link do autor.</span></li>
+      <li><b data-pt="Sem cópia disfarçada" data-en="No disguised copies">Sem cópia disfarçada</b><span class="muted" data-pt="Recusamos coletâneas que juntam milhares de skills de outras pessoas e põem a própria licença por cima." data-en="We turn down collections that bundle thousands of other people's skills under their own licence.">Recusamos coletâneas que juntam milhares de skills de outras pessoas e põem a própria licença por cima.</span></li>
+      <li><b data-pt="Só texto, conferido" data-en="Just text, checked">Só texto, conferido</b><span class="muted" data-pt="Nada para instalar nem executar. Cada texto é conferido contra instruções escondidas, senhas e chaves." data-en="Nothing to install or run. Every text is checked for hidden instructions, passwords and keys.">Nada para instalar nem executar. Cada texto é conferido contra instruções escondidas, senhas e chaves.</span></li>
+      <li><b data-pt="Reprovar também é curadoria" data-en="Rejecting is curation too">Reprovar também é curadoria</b><span class="muted" data-pt="O que fica de fora aparece no Matusalém, com o motivo." data-en="What is left out is shown in Methuselah, with the reason.">O que fica de fora aparece no Matusalém, com o motivo.</span></li>
+    </ul>
+  </div>
+  <!--/CURADORIA-->
   <div class="counter">
     <div class="count"><b id="st-n">179</b><span data-pt="skills testadas e aprovadas hoje" data-en="skills tested and approved today">skills testadas e aprovadas hoje</span></div>
     <div class="count"><b id="st-m">400</b><span data-pt="é a meta da estreia" data-en="is the launch goal">é a meta da estreia</span></div>
@@ -829,7 +841,7 @@ let salvo=null;try{salvo=localStorage.getItem("lang")}catch(e){}
 setLang(salvo||((navigator.language||"pt").startsWith("pt")?"pt":"en"));
 </script>
 
-<!--VERSAO--><script>window.SKILLARIUM_VERSAO="20261113-105709";</script><!--/VERSAO-->
+<!--VERSAO--><script>window.SKILLARIUM_VERSAO="20261114-102842";</script><!--/VERSAO-->
 <!--FAQ-DADOS-->
 <script>
 // Skillarium — cérebro de respostas (11/nov/2026). Acha, no FAQ, a melhor resposta para uma pergunta escrita do jeito da pessoa,
