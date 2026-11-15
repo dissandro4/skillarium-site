@@ -235,7 +235,7 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:16px 28px;align-items:center}
 .pergunte input:focus{outline:2px solid var(--accent);outline-offset:2px}.pergunte-card{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:14px 18px;margin-top:12px}.pergunte-card.destaque{border-color:var(--accent)}
 .pergunte-card b{display:block;font-weight:500;margin-bottom:4px}.pergunte-card p{margin:0;color:var(--muted)}.pergunte-msg{color:var(--muted);margin:14px 0 0}.pergunte-sup{display:inline-block;margin-top:12px;color:var(--accent)}
 /*chat*/.chat-abrir{position:fixed;right:max(16px,env(safe-area-inset-right));bottom:max(16px,env(safe-area-inset-bottom));z-index:40;border:1px solid var(--accent);background:var(--accent);color:var(--on-accent);font:500 15px var(--body);padding:13px 20px;border-radius:999px;cursor:pointer;box-shadow:0 10px 30px rgba(0,0,0,.28);min-height:46px}
-.chat-caixa{position:fixed;right:max(12px,env(safe-area-inset-right));bottom:max(12px,env(safe-area-inset-bottom));z-index:41;width:min(380px,calc(100vw - 24px));max-height:min(620px,calc(100dvh - 24px));display:flex;flex-direction:column;background:var(--bg-2);color:var(--fg);border:1px solid var(--line);border-radius:22px;box-shadow:0 18px 60px rgba(0,0,0,.38);overflow:hidden}
+.chat-caixa{position:fixed;right:max(12px,env(safe-area-inset-right));bottom:max(12px,env(safe-area-inset-bottom));z-index:41;width:min(380px,calc(100vw - 24px));max-height:min(620px,calc(100vh - 24px));max-height:min(620px,calc(100dvh - 24px));display:flex;flex-direction:column;background:var(--bg-2);color:var(--fg);border:1px solid var(--line);border-radius:22px;box-shadow:0 18px 60px rgba(0,0,0,.38);overflow:hidden}
 .chat-caixa[hidden]{display:none}.chat-cab{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;border-bottom:1px solid var(--line)}.chat-x{border:0;background:none;color:var(--muted);font-size:26px;line-height:1;cursor:pointer;min-width:44px;min-height:44px}
 .chat-msgs{flex:1;overflow:auto;padding:14px 16px;display:flex;flex-direction:column;gap:10px}.chat-m{max-width:86%;padding:10px 14px;border-radius:18px;line-height:1.5;font-size:15px;white-space:pre-wrap}
 .chat-m.bot{background:var(--panel);border:1px solid var(--line);align-self:flex-start}.chat-m.cliente{background:var(--accent);color:var(--on-accent);align-self:flex-end}
@@ -248,6 +248,7 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:16px 28px;align-items:center}
 <canvas id="ceu" aria-hidden="true"></canvas>
 <div id="caranguejo" aria-hidden="true"><svg viewBox="14 16 100 96" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M42 64c0-12 9-18 22-18s22 6 22 18c0 13-10 23-22 23S42 77 42 64Z"/><path d="m52 48-3-8m27 8 3-8M43 58 30 49 26 35m59 23 13-9 4-14M27 36c-9-1-13-9-10-16l10 6 9-8c5 8 1 17-9 18Zm74 0c9-1 13-9 10-16l-10 6-9-8c-5 8-1 17 9 18ZM43 65 27 65 17 75m26-3-15 9-2 15m22-16-9 14 3 14m43-43h16l10 10M85 72l15 9 2 15M80 80l9 14-3 14"/><path d="M56 59h.1M72 59h.1" stroke-width="7"/></svg></div>
 
+<noscript><p style="margin:0;padding:12px 16px;text-align:center;font:15px/1.5 system-ui,sans-serif;background:#0d1b2a;color:#f3ead7">A busca e as demonstrações do Skillarium precisam do JavaScript ligado. Search and demos need JavaScript turned on.</p></noscript>
 <header class="bar"><div class="wrap">
   <nav class="nav">
     <a href="#ver" data-pt="Veja funcionando" data-en="See it work">Veja funcionando</a>
@@ -355,7 +356,7 @@ Memorando de 1 página.</button>
   </div>
   <!--/CURADORIA-->
   <div class="counter">
-    <div class="count"><b id="st-n">179</b><span data-pt="skills testadas e aprovadas hoje" data-en="skills tested and approved today">skills testadas e aprovadas hoje</span></div>
+    <div class="count"><b id="st-n">184</b><span data-pt="skills testadas e aprovadas hoje" data-en="skills tested and approved today">skills testadas e aprovadas hoje</span></div>
     <div class="count"><b id="st-m">400</b><span data-pt="é a meta da estreia" data-en="is the launch goal">é a meta da estreia</span></div>
     <div class="count"><b>13</b><span data-pt="novas por semana, em média, depois" data-en="new per week on average, after launch">novas por semana, em média, depois</span></div>
   </div>
@@ -841,7 +842,7 @@ let salvo=null;try{salvo=localStorage.getItem("lang")}catch(e){}
 setLang(salvo||((navigator.language||"pt").startsWith("pt")?"pt":"en"));
 </script>
 
-<!--VERSAO--><script>window.SKILLARIUM_VERSAO="20261114-102842";</script><!--/VERSAO-->
+<!--VERSAO--><script>window.SKILLARIUM_VERSAO="20261115-085016";</script><!--/VERSAO-->
 <!--FAQ-DADOS-->
 <script>
 // Skillarium — cérebro de respostas (11/nov/2026). Acha, no FAQ, a melhor resposta para uma pergunta escrita do jeito da pessoa,
@@ -1078,8 +1079,8 @@ const T={
   ex:"Pick a request:",res:"1 tested skill · step by step"}
 };
 const css=`
-.mv{width:min(1040px,calc(100vw - 24px));max-height:calc(100dvh - 24px);padding:0;border:1px solid var(--line,#26404c);border-radius:22px;background:var(--bg,#08131d);color:var(--fg,#eef3f4);overflow:auto;box-shadow:0 30px 80px -20px rgba(0,0,0,.7)}
-.mv::backdrop{background:rgba(4,10,16,.72);backdrop-filter:blur(4px)}
+.mv{width:min(1040px,calc(100vw - 24px));max-height:calc(100vh - 24px);max-height:calc(100dvh - 24px);padding:0;border:1px solid var(--line,#26404c);border-radius:22px;background:var(--bg,#08131d);color:var(--fg,#eef3f4);overflow:auto;box-shadow:0 30px 80px -20px rgba(0,0,0,.7)}
+.mv::backdrop{background:rgba(4,10,16,.72);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
 .mv *{box-sizing:border-box}
 .mv-in{display:grid;gap:16px;padding:clamp(14px,3vw,26px)}
 .mv-top{display:flex;justify-content:space-between;gap:12px;align-items:start}
@@ -1276,8 +1277,8 @@ const T={
   apr:"APPROVED",rep2:"REJECTED",bib:"Goes to the library, ready for the customer.",mat:"Goes to Matusalém, with the reason.",mot:"Reason:",sai:"output:"}
 };
 const css=`
-.av{width:min(1040px,calc(100vw - 24px));max-height:calc(100dvh - 24px);padding:0;border:1px solid var(--line,#26404c);border-radius:22px;background:var(--bg,#08131d);color:var(--fg,#eef3f4);overflow:auto;box-shadow:0 30px 80px -20px rgba(0,0,0,.7)}
-.av::backdrop{background:rgba(4,10,16,.72);backdrop-filter:blur(4px)}
+.av{width:min(1040px,calc(100vw - 24px));max-height:calc(100vh - 24px);max-height:calc(100dvh - 24px);padding:0;border:1px solid var(--line,#26404c);border-radius:22px;background:var(--bg,#08131d);color:var(--fg,#eef3f4);overflow:auto;box-shadow:0 30px 80px -20px rgba(0,0,0,.7)}
+.av::backdrop{background:rgba(4,10,16,.72);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
 .av *{box-sizing:border-box}
 .av-in{display:grid;gap:16px;padding:clamp(14px,3vw,26px)}
 .av-top{display:flex;justify-content:space-between;gap:12px;align-items:start}
