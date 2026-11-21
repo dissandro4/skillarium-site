@@ -223,6 +223,8 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:16px 28px;align-items:center}
 .fer[aria-expanded="true"] .i-alq svg .bolha{animation:fer-bolha 1.6s ease-in infinite}
 .fer[aria-expanded="true"] .i-alq svg .bolha:nth-of-type(2){animation-delay:.5s}
 .fer[aria-expanded="true"] .i-mat svg{animation:fer-gira 2.4s ease-in-out infinite alternate;transform-origin:50% 50%}
+.fer[aria-expanded="true"] .i-merlin svg .luz{animation:fer-brilho 1.4s ease-in-out infinite alternate;transform-origin:70% 25%}
+@keyframes fer-brilho{from{opacity:.25;transform:scale(.85)}to{opacity:1;transform:scale(1.08)}}
 .fer[aria-expanded="true"] .i-crab svg{animation:passo .5s ease-in-out infinite alternate;transform-origin:50% 60%}
 @keyframes fer-lupa{from{transform:translate(-3px,-2px)}to{transform:translate(3px,2px)}}
 @keyframes fer-sobe{from{transform:translateY(2px)}to{transform:translateY(-4px)}}
@@ -254,7 +256,9 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:16px 28px;align-items:center}
     <a href="#ver" data-pt="Veja funcionando" data-en="See it work">Veja funcionando</a>
     <a href="#dentro" data-pt="Por dentro" data-en="Inside">Por dentro</a>
     <a href="#ia" data-pt="Sua IA (MCP)" data-en="Your AI (MCP)">Sua IA (MCP)</a>
+    <a href="#novo" data-pt="Novidades" data-en="What’s new">Novidades</a>
     <a href="#preco" data-pt="Preço" data-en="Price">Preço</a>
+    <a href="lista-de-espera.html" data-pt="Lista de espera" data-en="Waitlist">Lista de espera</a>
   </nav>
   <a class="mark" href="#top">Skillarium</a>
   <div class="tools">
@@ -374,11 +378,26 @@ Memorando de 1 página.</button>
   </div>
 </div></section>
 
+<style>#novo .item{align-content:start}#novo .item h3{display:flex;align-items:center;gap:10px;margin:0;min-height:34px}</style>
+<section id="novo"><div class="wrap">
+  <div class="head">
+    <div class="eyebrow" data-pt="Novo no app" data-en="New in the app">Novo no app</div>
+    <h2 data-pt="Agora o app também te guia." data-en="Now the app guides you too.">Agora o app também te guia.</h2>
+    <p class="lede" data-pt="Três jeitos novos de achar o que serve para o seu trabalho, sem precisar saber o nome da skill." data-en="Three new ways to find what fits your work, without knowing the skill’s name.">Três jeitos novos de achar o que serve para o seu trabalho, sem precisar saber o nome da skill.</p>
+  </div>
+  <div class="grid">
+    <div class="item"><h3 data-pt="Berçário de Skills" data-en="Skill Nursery">Berçário de Skills</h3><p class="muted" data-pt="Diga a sua profissão (são 169 na lista) e veja a equipe do Skillarium buscar, provar e entregar as skills testadas para ela, como constelações que se acendem. Toque nos robôs, no código e nas estrelas para saber o que cada um faz." data-en="Tell it your profession (169 on the list) and watch the Skillarium team find, prove and deliver the tested skills for it, like constellations lighting up. Tap the robots, the code and the stars to see what each one does.">Diga a sua profissão (são 169 na lista) e veja a equipe do Skillarium buscar, provar e entregar as skills testadas para ela, como constelações que se acendem. Toque nos robôs, no código e nas estrelas para saber o que cada um faz.</p></div>
+    <div class="item"><h3 data-pt="Arsenal" data-en="Arsenal">Arsenal</h3><p class="muted" data-pt="Skills, prompts, comandos, conectores e repositórios num lugar só. O que vem de fora é revisado e refeito com o nosso protocolo; você só copia, ou pede numa frase: “Skillarium, me dê o pacote…”." data-en="Skills, prompts, commands, connectors and repositories in one place. Anything from outside is reviewed and remade with our protocol; you just copy, or ask in one sentence: “Skillarium, give me the … pack”.">Skills, prompts, comandos, conectores e repositórios num lugar só. O que vem de fora é revisado e refeito com o nosso protocolo; você só copia, ou pede numa frase: “Skillarium, me dê o pacote…”.</p></div>
+    <div class="item"><h3 data-pt="Top 40, só testadas" data-en="Top 40, tested only">Top 40, só testadas</h3><p class="muted" data-pt="As 40 skills para começar rápido agora vêm só das testadas, com selo para as três primeiras." data-en="The 40 quick-start skills now come only from tested ones, with a seal for the top three.">As 40 skills para começar rápido agora vêm só das testadas, com selo para as três primeiras.</p></div>
+  </div>
+  <div class="mv-abrir"><a class="btn primary" href="lista-de-espera.html" data-pt="Quero entrar na lista de espera" data-en="Join the waitlist">Quero entrar na lista de espera</a><span class="muted" data-pt="Os 400 primeiros pagam uma vez e ficam para sempre." data-en="The first 400 pay once and keep it forever.">Os 400 primeiros pagam uma vez e ficam para sempre.</span></div>
+</div></section>
+
 <section id="ferramentas"><div class="wrap">
   <div class="head">
     <div class="eyebrow" data-pt="Quem trabalha por trás" data-en="Who works behind the scenes">Quem trabalha por trás</div>
     <h2 data-pt="Cada ferramenta tem o seu traço." data-en="Every tool has its own line.">Cada ferramenta tem o seu traço.</h2>
-    <p class="lede" data-pt="Seis personagens, um só universo. Toque em um para vê-lo trabalhar." data-en="Six characters, one universe. Tap one to watch it work.">Seis personagens, um só universo. Toque em um para vê-lo trabalhar.</p>
+    <p class="lede" data-pt="Sete personagens, um só universo. Toque em um para vê-lo trabalhar." data-en="Seven characters, one universe. Tap one to watch it work.">Sete personagens, um só universo. Toque em um para vê-lo trabalhar.</p>
   </div>
   <div class="fer-grid" id="fer-grid">
     <button type="button" class="fer" aria-expanded="false"><span class="fer-ic i-crab"><svg viewBox="12 14 104 100" aria-hidden="true"><path d="M42 64c0-12 9-18 22-18s22 6 22 18c0 13-10 23-22 23S42 77 42 64Z"/><path d="m52 48-3-8m27 8 3-8M43 58 30 49 26 35m59 23 13-9 4-14M27 36c-9-1-13-9-10-16l10 6 9-8c5 8 1 17-9 18Zm74 0c9-1 13-9 10-16l-10 6-9-8c-5 8-1 17 9 18ZM43 65 27 65 17 75m26-3-15 9-2 15m22-16-9 14 3 14m43-43h16l10 10M85 72l15 9 2 15M80 80l9 14-3 14"/><path d="M56 59h.1M72 59h.1"/></svg></span><b>Skillarium</b><small data-pt="O universo" data-en="The universe">O universo</small><p data-pt="A biblioteca de skills testadas, no app, no programa de computador e aqui no site." data-en="The library of tested skills, in the app, the desktop program and on this site.">A biblioteca de skills testadas, no app, no programa de computador e aqui no site.</p></button>
@@ -387,6 +406,7 @@ Memorando de 1 página.</button>
     <button type="button" class="fer" aria-expanded="false"><span class="fer-ic i-nariz"><svg viewBox="0 0 64 64" aria-hidden="true"><path d="M24 6c1 11 3 19 3 27 0 6-9 8-9 14 0 5 6 7 12 7 7 0 13-2 13-7 0-3-3-5-7-6"/><path d="M32 46c-2-2-5-2-7 0"/><g class="cheiro"><path d="M48 26c4 2 6 5 6 9"/><path d="M52 16c7 3 10 8 10 15"/></g></svg></span><b>Farejador</b><small data-pt="Fareja novidades" data-en="Sniffs out news">Fareja novidades</small><p data-pt="Procura skills e ideias novas na internet, confere a licença e entrega à fila do Alquimista." data-en="Looks for new skills and ideas online, checks the license and hands them to the Alchemist queue.">Procura skills e ideias novas na internet, confere a licença e entrega à fila do Alquimista.</p></button>
     <button type="button" class="fer" aria-expanded="false"><span class="fer-ic i-alq"><svg viewBox="0 0 64 64" aria-hidden="true"><path d="M26 7h12"/><path d="M28 7v18L13 50c-2 4 0 8 5 8h28c5 0 7-4 5-8L36 25V7"/><path d="M19 42h26"/><circle class="bolha" cx="30" cy="35" r="2"/><circle class="bolha" cx="37" cy="31" r="1.5"/><path d="M48 12v8M44 16h8"/></svg></span><b>Alquimista</b><small data-pt="Traduz e prova" data-en="Translates and proves">Traduz e prova</small><p data-pt="Traduz, adapta e testa cada skill. Só quem passa vira skill aprovada." data-en="Translates, adapts and tests every skill. Only those that pass become approved.">Traduz, adapta e testa cada skill. Só quem passa vira skill aprovada.</p></button>
     <button type="button" class="fer" aria-expanded="false"><span class="fer-ic i-mat"><svg viewBox="0 0 64 64" aria-hidden="true"><path d="M19 7h26M19 57h26"/><path d="M22 7c0 15 10 17 10 25S22 42 22 57M42 7c0 15-10 17-10 25s10 10 10 25"/><path d="M27 13h10M28 51h8"/></svg></span><b>Matusalém</b><small data-pt="Biblioteca e arquivo" data-en="Library and archive">Biblioteca e arquivo</small><p data-pt="Guarda tudo o que já passou por aqui, inclusive o que saiu, sem nunca apagar." data-en="Keeps everything that ever passed through, including what was retired, never deleting.">Guarda tudo o que já passou por aqui, inclusive o que saiu, sem nunca apagar.</p></button>
+    <button type="button" class="fer" aria-expanded="false"><span class="fer-ic i-merlin"><svg viewBox="0 0 64 64" aria-hidden="true"><path d="M14 54 44 24"/><path d="m40 20 8 8"/><g class="luz"><path d="M48 6v8M44 10h8"/><path d="M56 22v6M53 25h6"/><path d="M30 10v4M28 12h4"/></g></svg></span><b>Merlin</b><small data-pt="O supervisor" data-en="The supervisor">O supervisor</small><p data-pt="Acompanha o trabalho de toda a equipe, todo dia, e avisa o que precisa de atenção. Não aprova nem recusa nada sozinho." data-en="Watches the whole team’s work every day and flags what needs attention. Never approves or rejects anything on its own.">Acompanha o trabalho de toda a equipe, todo dia, e avisa o que precisa de atenção. Não aprova nem recusa nada sozinho.</p></button>
   </div>
   <div class="mv-abrir"><button type="button" class="btn primary" id="av-abrir" data-pt="▶ Ver o Alquimista trabalhando" data-en="▶ Watch the Alchemist work">▶ Ver o Alquimista trabalhando</button><span class="muted" data-pt="Uma skill de verdade sendo provada, passo a passo." data-en="A real skill being proven, step by step.">Uma skill de verdade sendo provada, passo a passo.</span></div>
   <p class="fer-dica muted" data-pt="Cada símbolo é desenhado à mão em linha fina, como as constelações do céu." data-en="Each symbol is hand-drawn in a fine line, like the constellations in the sky.">Cada símbolo é desenhado à mão em linha fina, como as constelações do céu.</p>
@@ -421,13 +441,13 @@ Memorando de 1 página.</button>
       <span data-l="4" hidden data-pt="A IA aplica a skill e conta a você qual usou. Você confere." data-en="The AI applies the skill and tells you which one it used. You can check.">A IA aplica a skill e conta a você qual usou. Você confere.</span>
     </p>
     <div class="mcp-tools" role="group" aria-label="Ferramentas / Tools">
-      <span data-pt="As 4 ferramentas:" data-en="The 4 tools:">As 4 ferramentas:</span>
-      <button type="button" data-t="0">buscar_skills</button><button type="button" data-t="1">ler_skill</button><button type="button" data-t="2">listar_categorias</button><button type="button" data-t="3">novidades_do_farejador</button>
+      <span data-pt="As 5 ferramentas:" data-en="The 5 tools:">As 5 ferramentas:</span>
+      <button type="button" data-t="0">buscar_skills</button><button type="button" data-t="1">ler_skill</button><button type="button" data-t="2">listar_categorias</button><button type="button" data-t="3">novidades_do_farejador</button><button type="button" data-t="4">pacote_skillarium</button>
     </div>
     <p class="mcp-dica" id="mcp-dica" aria-live="polite"></p>
   </div>
   <div class="grid">
-    <div class="item"><h3 data-pt="4 ferramentas para a sua IA" data-en="4 tools for your AI">4 ferramentas para a sua IA</h3><p class="muted" data-pt="Sherlock (buscar skills), ler skill, listar categorias e novidades do Farejador. Só passam skills testadas." data-en="Sherlock (find skills), read skill, list categories and Scout news. Tested skills only.">Sherlock (buscar skills), ler skill, listar categorias e novidades do Farejador. Só passam skills testadas.</p></div>
+    <div class="item"><h3 data-pt="5 ferramentas para a sua IA" data-en="5 tools for your AI">5 ferramentas para a sua IA</h3><p class="muted" data-pt="Sherlock (buscar skills), ler skill, listar categorias, novidades do Farejador e um pacote inteiro numa frase. Só passam skills testadas." data-en="Sherlock (find skills), read skill, list categories, Scout news and a whole pack in one sentence. Tested skills only.">Sherlock (buscar skills), ler skill, listar categorias, novidades do Farejador e um pacote inteiro numa frase. Só passam skills testadas.</p></div>
     <div class="item"><h3 data-pt="O Farejador também é MCP" data-en="The Scout is MCP too">O Farejador também é MCP</h3><p class="muted" data-pt="É a ferramenta de curadoria do Skillarium: procura skills e ideias novas no GitHub, no YouTube, em fóruns e sites, confere a licença e manda para teste. A sua IA vê o que ele trouxe em “novidades do Farejador”." data-en="It is Skillarium's curation tool: it looks for new skills and ideas on GitHub, YouTube, forums and websites, checks the licence and sends them for testing. Your AI sees what it found in “Scout news”.">É a ferramenta de curadoria do Skillarium: procura skills e ideias novas no GitHub, no YouTube, em fóruns e sites, confere a licença e manda para teste. A sua IA vê o que ele trouxe em “novidades do Farejador”.</p></div>
     <div class="item"><h3 data-pt="Funciona com" data-en="Works with">Funciona com</h3><p class="muted" data-pt="Claude, Claude Code, Codex, Gemini CLI e ASELLUS. No programa de mesa, o botão “Conectar às minhas IAs” mostra o passo a passo." data-en="Claude, Claude Code, Codex, Gemini CLI and ASELLUS. In the desktop app, the “Connect my AIs” button shows the steps.">Claude, Claude Code, Codex, Gemini CLI e ASELLUS. No programa de mesa, o botão “Conectar às minhas IAs” mostra o passo a passo.</p></div>
   </div>
@@ -452,6 +472,7 @@ Memorando de 1 página.</button>
       <li data-pt="Skills novas toda semana, incluídas" data-en="New skills every week, included">Skills novas toda semana, incluídas</li>
       <li data-pt="Português e inglês · funciona offline" data-en="English and Portuguese · works offline">Português e inglês · funciona offline</li>
     </ul>
+    <p style="text-align:center;margin:14px 0 4px"><a class="btn primary" href="lista-de-espera.html" data-pt="Entrar na lista de espera (grátis)" data-en="Join the waitlist (free)">Entrar na lista de espera (grátis)</a></p>
     <p class="muted" style="font-size:14px" data-pt="Licença pessoal. Cada skill foi revisada e testada antes de chegar até você. Quem repassa entrega de graça a própria vantagem — e o amigo de hoje passa a competir com você amanhã, com as ferramentas que você pagou." data-en="Personal licence. Every skill was reviewed and tested before it reached you. Passing it on gives your edge away for free — and today's friend competes with you tomorrow, with the tools you paid for.">Licença pessoal. Cada skill foi revisada e testada antes de chegar até você. Quem repassa entrega de graça a própria vantagem — e o amigo de hoje passa a competir com você amanhã, com as ferramentas que você pagou.</p>
   </div>
 </div></section>
@@ -531,7 +552,7 @@ const REDUZ=matchMedia("(prefers-reduced-motion: reduce)").matches;
   const pac=document.getElementById("mcp-pacote"),leg=document.getElementById("mcp-legenda"),play=document.getElementById("mcp-play"),dica=document.getElementById("mcp-dica");
   const botoes=[...document.querySelectorAll("#mcp-demo .mcp-passos button[data-p]")],tools=[...document.querySelectorAll("#mcp-demo .mcp-tools button")];
   const rota={1:[0,50],2:[50,100],3:[100,50],4:[50,0]};let timer=null;
-  const DICAS={pt:["Procura a skill certa para a etapa do seu projeto.","Abre a skill escolhida para a IA seguir.","Mostra os grupos de skills disponíveis.","Mostra o que o Farejador trouxe de novo (ainda em teste)."],en:["Finds the right skill for your project step.","Opens the chosen skill for the AI to follow.","Shows the available skill groups.","Shows what the Scout found lately (still in testing)."]};
+  const DICAS={pt:["Procura a skill certa para a etapa do seu projeto.","Abre a skill escolhida para a IA seguir.","Mostra os grupos de skills disponíveis.","Mostra o que o Farejador trouxe de novo (ainda em teste).","Entrega de uma vez todas as skills testadas de um pacote, como o FounderOS."],en:["Finds the right skill for your project step.","Opens the chosen skill for the AI to follow.","Shows the available skill groups.","Shows what the Scout found lately (still in testing).","Delivers every tested skill of a pack at once, like FounderOS."]};
   const idioma=()=>document.documentElement.lang&&document.documentElement.lang.toLowerCase().startsWith("en")?"en":"pt";
   function passo(n){
     palco.dataset.passo=n;
@@ -842,7 +863,7 @@ let salvo=null;try{salvo=localStorage.getItem("lang")}catch(e){}
 setLang(salvo||((navigator.language||"pt").startsWith("pt")?"pt":"en"));
 </script>
 
-<!--VERSAO--><script>window.SKILLARIUM_VERSAO="20261121-030047";</script><!--/VERSAO-->
+<!--VERSAO--><script>window.SKILLARIUM_VERSAO="20261121-030409";</script><!--/VERSAO-->
 <!--FAQ-DADOS-->
 <script>
 // Skillarium — cérebro de respostas (11/nov/2026). Acha, no FAQ, a melhor resposta para uma pergunta escrita do jeito da pessoa,
