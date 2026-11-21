@@ -722,7 +722,7 @@ function montar(){
     for(const f of[-.06,.06,-.12,.12,-.2,.2,-.3,.3]){const dx=Math.max(8-x1,Math.min(W-8-x2,f*W));if(!dx)continue;c.pontos.forEach(p=>p.x+=dx);const n=sobre(c);c.pontos.forEach(p=>p.x-=dx);if(n<nota){nota=n;melhor=dx;if(!n)break;}}
     if(melhor){c.pontos.forEach(p=>p.x+=melhor);c.cx+=melhor;}
   });
-  consts=consts.filter(c=>c.topo||!colocados.some(q=>hit(bb(c),q)));
+  consts=consts.filter(c=>c.topo?!cel:!colocados.some(q=>hit(bb(c),q)));   // 21/nov (dono): no celular, sem as constelações do topo (pareciam bandeirinhas)
   // paradas do caranguejo: uma estrela de cada constelação (de preferência fora do texto), na ordem de rolagem
   paradas=consts.filter(c=>!c.topo&&!c.fina).map(c=>{const p=c.pontos.find(q=>!sobreTexto(q.x,q.y))||c.pontos[0];return{x:p.x,y:p.y,s:Math.max(1,c.cy-H/2)};}).sort((a,b)=>a.s-b.s);
 }
@@ -875,7 +875,7 @@ let salvo=null;try{salvo=localStorage.getItem("lang")}catch(e){}
 setLang(salvo||((navigator.language||"pt").startsWith("pt")?"pt":"en"));
 </script>
 
-<!--VERSAO--><script>window.SKILLARIUM_VERSAO="20261121-194105";</script><!--/VERSAO-->
+<!--VERSAO--><script>window.SKILLARIUM_VERSAO="20261121-194739";</script><!--/VERSAO-->
 <!--FAQ-DADOS-->
 <script>
 // Skillarium — cérebro de respostas (11/nov/2026). Acha, no FAQ, a melhor resposta para uma pergunta escrita do jeito da pessoa,

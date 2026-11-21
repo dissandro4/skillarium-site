@@ -29,10 +29,10 @@ document.addEventListener('DOMContentLoaded', function () {
 .cu{display:grid;gap:18px}
 .cu-funil{display:grid;gap:8px}
 .cu-etapa{display:grid;grid-template-columns:minmax(0,1fr);gap:4px;text-align:left;border:0;background:none;color:inherit;font:inherit;cursor:pointer;padding:6px 0}
-.cu-barra{height:clamp(46px,7vw,64px);border-radius:14px;display:flex;align-items:center;gap:14px;padding:0 18px;min-width:max-content;background:linear-gradient(90deg,color-mix(in srgb,var(--accent) 34%,transparent),color-mix(in srgb,var(--accent) 12%,transparent));border:1px solid color-mix(in srgb,var(--accent) 45%,var(--line));transition:width .9s cubic-bezier(.2,.8,.2,1),box-shadow .2s}
+.cu-barra{min-height:clamp(52px,7vw,64px);border-radius:14px;display:flex;align-items:center;gap:14px;padding:8px 18px;max-width:100%;box-sizing:border-box;background:linear-gradient(90deg,color-mix(in srgb,var(--accent) 34%,transparent),color-mix(in srgb,var(--accent) 12%,transparent));border:1px solid color-mix(in srgb,var(--accent) 45%,var(--line));transition:width .9s cubic-bezier(.2,.8,.2,1),box-shadow .2s}
 .cu-etapa[aria-pressed=true] .cu-barra{box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 35%,transparent)}
 .cu-num{font:400 clamp(28px,5vw,46px)/1 var(--display);color:var(--fg);font-variant-numeric:tabular-nums}
-.cu-rot{font-size:clamp(13px,1.6vw,15px);color:var(--muted)}
+.cu-rot{font-size:clamp(13px,1.6vw,15px);color:var(--muted);line-height:1.3;min-width:0}
 .cu-detalhe{margin:0;min-height:4.6em;font-size:1.02rem;line-height:1.55;padding:14px 16px;border-left:3px solid var(--accent);background:var(--panel);border-radius:0 12px 12px 0}
 .cu-portas{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
 .cu-porta{border:1px solid var(--line);border-radius:14px;padding:12px 14px;background:var(--panel);text-align:left;color:inherit;font:inherit;cursor:pointer;display:grid;gap:4px}
@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', function () {
 .cu-porta[aria-pressed=true]{border-color:var(--accent)}
 .cu-ritmo{display:flex;flex-wrap:wrap;align-items:baseline;gap:10px;padding:16px 18px;border-radius:16px;border:1px solid color-mix(in srgb,var(--accent) 50%,var(--line))}
 .cu-ritmo b{font:400 clamp(34px,6vw,54px)/1 var(--display);color:var(--accent)}
-@media (max-width:560px){.cu-barra{min-width:0;padding:0 12px}.cu-rot{font-size:12px}}
+@media (max-width:560px){.cu-barra{padding:8px 14px}.cu-rot{font-size:13px}}
 @media (prefers-reduced-motion:reduce){.cu-barra{transition:none}}`;
   document.head.appendChild(css);
   let sel = 0, portaSel = -1, contou = false;
@@ -51,8 +51,8 @@ document.addEventListener('DOMContentLoaded', function () {
     E.forEach((e, i) => {
       const b = document.createElement('button'); b.type = 'button'; b.className = 'cu-etapa'; b.setAttribute('aria-pressed', String(i === sel));
       const barra = document.createElement('div'); barra.className = 'cu-barra';
-      const w = Math.max(34, Math.round((Math.log10(Math.max(10, e.n)) / max) * 100));   // escala logarítmica: 273 ainda aparece ao lado de 1,5 milhão
-      barra.style.width = contou || parado ? w + '%' : '34%'; barra.dataset.w = w;
+      const w = Math.max(innerWidth < 600 ? 64 : 46, Math.round((Math.log10(Math.max(10, e.n)) / max) * 100));   // escala logarítmica: 273 ainda aparece ao lado de 1,5 milhão
+      barra.style.width = contou || parado ? w + '%' : (innerWidth < 600 ? '64%' : '46%'); barra.dataset.w = w;
       const num = document.createElement('span'); num.className = 'cu-num'; num.textContent = contou || parado ? fmt(e.n) : '0'; num.dataset.n = e.n;
       const rot = document.createElement('span'); rot.className = 'cu-rot'; rot.textContent = e.t;
       barra.append(num, rot); b.append(barra); b.onclick = () => { sel = i; if (e.caca && window.SkillariumOrion) SkillariumOrion.revelar(render, X('A caça de hoje', "Today's hunt")); else render(); }; funil.append(b);
