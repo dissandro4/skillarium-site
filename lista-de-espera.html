@@ -1,0 +1,69 @@
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Lista de espera · Skillarium</title><meta name="description" content="Entre na lista de espera do Skillarium: skills de IA testadas, prontas para copiar. Fundadores pagam uma vez e ficam para sempre.">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Manrope:wght@400;500;600&display=swap"><style>:root{--bg:#08131d;--bg-2:#102330;--line:#26404c;--fg:#eef3f4;--muted:#a8c0ca;--accent:#dbc293;--on-accent:#12212a;color-scheme:dark}
+@media (prefers-color-scheme:light){:root{--bg:#ece3d3;--bg-2:#f6f0e4;--line:#d8ccb6;--fg:#2c2621;--muted:#6c6152;--accent:#8a6935;--on-accent:#fff9ed;color-scheme:light}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:400 16.5px/1.7 "Manrope",-apple-system,"Segoe UI",sans-serif}
+.wrap{max-width:760px;margin:0 auto;padding:56px max(16px,env(safe-area-inset-left,0px)) 80px max(16px,env(safe-area-inset-right,0px))}
+h1,h2{font-family:"Instrument Serif",Georgia,serif;font-weight:400;margin:0}h1{font-size:clamp(40px,7vw,64px);line-height:1.05;margin-bottom:10px}h2{font-size:28px;margin:34px 0 8px}
+p,li{color:var(--muted)}a{color:var(--accent)}.eyebrow{font:500 11.5px ui-monospace,Menlo,monospace;letter-spacing:.3em;text-transform:uppercase;color:var(--accent)}
+.lang{float:right;display:flex;gap:4px}.lang button{border:1px solid var(--line);background:none;color:var(--muted);border-radius:999px;padding:5px 11px;cursor:pointer;min-height:36px}
+.lang button[aria-pressed=true]{background:var(--accent);color:var(--bg)}[hidden]{display:none!important}
+.oferta{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:22px 0}.oferta div{padding:14px 16px;border:1px solid var(--line);border-radius:14px;background:var(--bg-2)}
+.oferta b{display:block;font-family:"Instrument Serif",Georgia,serif;font-weight:400;font-size:30px;color:var(--fg);line-height:1.1}.oferta span{font-size:14px}
+form{display:grid;gap:12px;margin-top:10px;padding:20px;border:1px solid color-mix(in srgb,var(--accent) 45%,var(--line));border-radius:18px;background:var(--bg-2)}
+label{font-size:14px;color:var(--fg)}input[type=email],input[type=text]{width:100%;min-height:48px;padding:10px 14px;border-radius:12px;border:1px solid var(--line);background:var(--bg);color:var(--fg);font:inherit}
+input:focus{outline:2px solid var(--accent);outline-offset:1px}.ok{display:flex;gap:10px;align-items:flex-start;font-size:14px;color:var(--muted)}.ok input{margin-top:5px;width:18px;height:18px;accent-color:var(--accent)}
+button.enviar{min-height:50px;border:0;border-radius:999px;background:var(--accent);color:var(--on-accent);font:600 16px "Manrope",sans-serif;cursor:pointer}
+.msg{margin:4px 0 0;font-size:15px}.msg.erro{color:#e9a38f}.msg.feito{color:var(--fg)}
+@media (max-width:600px){.oferta{grid-template-columns:1fr}}</style></head>
+<body><div class="wrap"><div class="lang"><button data-v="pt" aria-pressed="true">PT</button><button data-v="en" aria-pressed="false">EN</button></div>
+<p class="eyebrow"><a href="index.html" style="text-decoration:none">Skillarium</a></p>
+
+<div data-l="pt">
+<h1>Entre na lista de espera</h1>
+<p>Skills de IA <b>testadas</b>, em português e inglês, prontas para copiar e colar no Claude, ChatGPT ou Gemini. Cada uma passou por licença, segurança e um teste de verdade antes de entrar.</p>
+<div class="oferta"><div><b data-total>—</b><span>skills testadas hoje (meta da estreia: 400)</span></div><div><b>£4,99</b><span>compra única · R$ 29,20 no Brasil</span></div><div><b>400</b><span>primeiros são fundadores: acesso para sempre</span></div></div>
+<form id="f-pt" novalidate>
+<label for="email-pt">Seu e-mail</label><input id="email-pt" name="email" type="email" autocomplete="email" required placeholder="voce@exemplo.com">
+<label for="prof-pt">Sua profissão (opcional)</label><input id="prof-pt" name="profissao" type="text" autocomplete="organization-title" placeholder="Ex.: contadora, designer, dono de loja">
+<label class="ok"><input type="checkbox" name="consentimento" required><span>Quero receber <b>um</b> e-mail quando o Skillarium abrir. Não vendemos nem passamos o seu e-mail; você sai quando quiser (<a href="privacidade.html">privacidade</a>).</span></label>
+<button class="enviar" type="submit">Quero entrar na lista</button><p class="msg" role="status" aria-live="polite"></p>
+</form>
+<h2>Por que entrar agora?</h2>
+<ul><li>Os <b>400 primeiros</b> pagam uma vez e ficam com o Skillarium para sempre, com todas as skills novas.</li><li>Você não paga nada para entrar na lista. Só avisamos quando abrir.</li><li>Quer ajudar a testar antes? Diga a sua profissão: chamamos 13 pessoas para usar de graça por 2 semanas.</li></ul>
+</div>
+
+<div data-l="en" hidden>
+<h1>Join the waitlist</h1>
+<p><b>Tested</b> AI skills, in English and Portuguese, ready to copy and paste into Claude, ChatGPT or Gemini. Each one passed licence, safety and a real test before getting in.</p>
+<div class="oferta"><div><b data-total>—</b><span>tested skills today (launch goal: 400)</span></div><div><b>£4.99</b><span>one-time purchase</span></div><div><b>400</b><span>first buyers are founders: access forever</span></div></div>
+<form id="f-en" novalidate>
+<label for="email-en">Your e-mail</label><input id="email-en" name="email" type="email" autocomplete="email" required placeholder="you@example.com">
+<label for="prof-en">Your profession (optional)</label><input id="prof-en" name="profissao" type="text" autocomplete="organization-title" placeholder="E.g. accountant, designer, shop owner">
+<label class="ok"><input type="checkbox" name="consentimento" required><span>Send me <b>one</b> e-mail when Skillarium opens. We never sell or share your e-mail; leave any time (<a href="privacidade.html">privacy</a>).</span></label>
+<button class="enviar" type="submit">Join the waitlist</button><p class="msg" role="status" aria-live="polite"></p>
+</form>
+<h2>Why join now?</h2>
+<ul><li>The <b>first 400</b> pay once and keep Skillarium forever, with every new skill.</li><li>Joining is free. We only tell you when it opens.</li><li>Want to test it first? Tell us your profession: we invite 13 people to use it free for 2 weeks.</li></ul>
+</div>
+
+<script>
+// Para onde vão os cadastros (decisão do dono, 21/nov/2026): Formulário do Google na conta dele; as respostas ficam numa planilha dele.
+// Preencher com o link "formResponse" e os nomes "entry.NNN" de cada campo (vêm do link pré-preenchido do formulário).
+// Enquanto 'url' estiver vazio, a página só mostra a pré-visualização.
+const DESTINO = { url: 'https://docs.google.com/forms/d/e/1FAIpQLSdI4b7SUOIVZWCqP6NZ_8hisbBrDJflM6EiyEASB1wzSerymA/formResponse',
+  campos: { email: 'entry.1646325994', profissao: 'entry.958314832', idioma: 'entry.1890198477' } };
+const t=l=>{document.querySelectorAll('[data-l]').forEach(e=>e.hidden=e.dataset.l!==l);document.querySelectorAll('.lang button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.v===l)));document.documentElement.lang=l==='pt'?'pt-BR':'en';};
+document.querySelectorAll('.lang button').forEach(b=>b.onclick=()=>t(b.dataset.v));t((navigator.language||'pt').startsWith('pt')?'pt':'en');
+// número real de skills testadas: vem do mesmo status.json do site (nunca digitado à mão)
+fetch('status.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).then(s=>{if(s&&s.aprovadas)document.querySelectorAll('[data-total]').forEach(e=>e.textContent=s.aprovadas);}).catch(()=>{});
+for(const f of document.querySelectorAll('form')){const pt=f.id==='f-pt',msg=f.querySelector('.msg');
+  f.onsubmit=async(e)=>{e.preventDefault();msg.className='msg';const email=f.email.value.trim();
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){msg.className='msg erro';msg.textContent=pt?'Confira o seu e-mail.':'Please check your e-mail.';f.email.focus();return;}
+    if(!f.consentimento.checked){msg.className='msg erro';msg.textContent=pt?'Marque a caixa para podermos avisar você.':'Tick the box so we can let you know.';return;}
+    if(!DESTINO.url){msg.className='msg feito';msg.textContent=pt?'Pré-visualização: o envio ainda não está ligado.':'Preview: sending is not connected yet.';return;}
+    try{const dados=new URLSearchParams();dados.append(DESTINO.campos.email,email);if(DESTINO.campos.profissao)dados.append(DESTINO.campos.profissao,f.profissao.value.trim());if(DESTINO.campos.idioma)dados.append(DESTINO.campos.idioma,pt?'pt':'en');
+      await fetch(DESTINO.url,{method:'POST',mode:'no-cors',body:dados});   // o Google não devolve resposta legível a outro site: se não houve erro de rede, o envio saiu
+      f.reset();msg.className='msg feito';msg.textContent=pt?'Pronto! Você está na lista. Avisamos quando abrir.':'Done! You are on the list. We will tell you when it opens.';}
+    catch(_){msg.className='msg erro';msg.textContent=pt?'Não deu para enviar agora. Tente de novo em instantes.':'Could not send now. Please try again shortly.';}};}
+</script></div></body></html>
