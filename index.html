@@ -383,13 +383,14 @@ Memorando de 1 página.</button>
   <div class="head">
     <div class="eyebrow" data-pt="Novo no app" data-en="New in the app">Novo no app</div>
     <h2 data-pt="Agora o app também te guia." data-en="Now the app guides you too.">Agora o app também te guia.</h2>
-    <p class="lede" data-pt="Três jeitos novos de achar o que serve para o seu trabalho, sem precisar saber o nome da skill." data-en="Three new ways to find what fits your work, without knowing the skill’s name.">Três jeitos novos de achar o que serve para o seu trabalho, sem precisar saber o nome da skill.</p>
+    <p class="lede" data-pt="Três jeitos novos de achar o que serve para o seu trabalho. Experimente aqui: escolha a sua profissão." data-en="Three new ways to find what fits your work. Try it here: pick your profession.">Três jeitos novos de achar o que serve para o seu trabalho. Experimente aqui: escolha a sua profissão.</p>
   </div>
-  <div class="grid">
+  <div id="novo-vivo"><div class="grid">
     <div class="item"><h3 data-pt="Berçário de Skills" data-en="Skill Nursery">Berçário de Skills</h3><p class="muted" data-pt="Diga a sua profissão (são 169 na lista) e veja a equipe do Skillarium buscar, provar e entregar as skills testadas para ela, como constelações que se acendem. Toque nos robôs, no código e nas estrelas para saber o que cada um faz." data-en="Tell it your profession (169 on the list) and watch the Skillarium team find, prove and deliver the tested skills for it, like constellations lighting up. Tap the robots, the code and the stars to see what each one does.">Diga a sua profissão (são 169 na lista) e veja a equipe do Skillarium buscar, provar e entregar as skills testadas para ela, como constelações que se acendem. Toque nos robôs, no código e nas estrelas para saber o que cada um faz.</p></div>
     <div class="item"><h3 data-pt="Arsenal" data-en="Arsenal">Arsenal</h3><p class="muted" data-pt="Skills, prompts, comandos, conectores e repositórios num lugar só. O que vem de fora é revisado e refeito com o nosso protocolo; você só copia, ou pede numa frase: “Skillarium, me dê o pacote…”." data-en="Skills, prompts, commands, connectors and repositories in one place. Anything from outside is reviewed and remade with our protocol; you just copy, or ask in one sentence: “Skillarium, give me the … pack”.">Skills, prompts, comandos, conectores e repositórios num lugar só. O que vem de fora é revisado e refeito com o nosso protocolo; você só copia, ou pede numa frase: “Skillarium, me dê o pacote…”.</p></div>
     <div class="item"><h3 data-pt="Top 40, só testadas" data-en="Top 40, tested only">Top 40, só testadas</h3><p class="muted" data-pt="As 40 skills para começar rápido agora vêm só das testadas, com selo para as três primeiras." data-en="The 40 quick-start skills now come only from tested ones, with a seal for the top three.">As 40 skills para começar rápido agora vêm só das testadas, com selo para as três primeiras.</p></div>
-  </div>
+  </div></div>
+  <script src="novidades-dados.js" defer></script><script src="novidades.js" defer></script>
   <div class="mv-abrir"><a class="btn primary" href="lista-de-espera.html" data-pt="Quero entrar na lista de espera" data-en="Join the waitlist">Quero entrar na lista de espera</a><span class="muted" data-pt="Os 400 primeiros pagam uma vez e ficam para sempre." data-en="The first 400 pay once and keep it forever.">Os 400 primeiros pagam uma vez e ficam para sempre.</span></div>
 </div></section>
 
@@ -863,7 +864,7 @@ let salvo=null;try{salvo=localStorage.getItem("lang")}catch(e){}
 setLang(salvo||((navigator.language||"pt").startsWith("pt")?"pt":"en"));
 </script>
 
-<!--VERSAO--><script>window.SKILLARIUM_VERSAO="20261121-030409";</script><!--/VERSAO-->
+<!--VERSAO--><script>window.SKILLARIUM_VERSAO="20261121-070144";</script><!--/VERSAO-->
 <!--FAQ-DADOS-->
 <script>
 // Skillarium — cérebro de respostas (11/nov/2026). Acha, no FAQ, a melhor resposta para uma pergunta escrita do jeito da pessoa,
