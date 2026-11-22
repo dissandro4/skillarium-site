@@ -245,6 +245,18 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:16px 28px;align-items:center}
 .chat-form{display:flex;gap:8px;padding:10px 12px;border-top:1px solid var(--line)}.chat-form input{flex:1;min-width:0;font:400 16px var(--body);color:var(--fg);background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:12px 14px}
 .chat-env{border:0;background:var(--accent);color:var(--on-accent);font:500 15px var(--body);padding:0 16px;border-radius:14px;cursor:pointer;min-height:44px}.chat-nota{margin:0;padding:0 16px 12px;font-size:12px;color:var(--muted)}.chat-pessoa{align-self:flex-start;color:var(--accent);padding:6px 2px}
 /*atualizar*/#nova-versao{position:fixed;left:50%;transform:translateX(-50%);bottom:max(76px,calc(env(safe-area-inset-bottom) + 76px));z-index:60;display:flex;gap:12px;align-items:center;background:var(--bg-2);color:var(--fg);border:1px solid var(--accent);border-radius:999px;padding:10px 12px 10px 18px;box-shadow:0 12px 36px rgba(0,0,0,.35);font-size:14px}#nova-versao button{border:0;background:var(--accent);color:var(--on-accent);font:500 14px var(--body);padding:10px 16px;border-radius:999px;cursor:pointer;min-height:40px}
+
+/* 22/nov/2026 — reorganização: mais respiro entre botões e linhas; seções que continuam a anterior sem separação dupla */
+.mv-abrir{margin:26px 0 10px!important;gap:14px 18px!important}
+section.cont{padding-top:8px!important;border-top:0!important}
+.cta{margin-top:26px}
+header.bar .nav{padding-bottom:10px;row-gap:6px}
+.preco .btn,.preco p .btn{margin-top:10px}
+
+/* 22/nov/2026: no celular, o "Perguntar" flutuante não cobre o botão da abertura; aparece ao rolar */
+.chat-abrir{transition:opacity .25s ease,transform .25s ease}
+@media (max-width:700px){html.na-abertura .chat-abrir{opacity:0;pointer-events:none;transform:translateY(14px)}}
+@media (prefers-reduced-motion:reduce){.chat-abrir{transition:none}}
 </style>
 
 <canvas id="ceu" aria-hidden="true"></canvas>
@@ -253,11 +265,10 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:16px 28px;align-items:center}
 <noscript><p style="margin:0;padding:12px 16px;text-align:center;font:15px/1.5 system-ui,sans-serif;background:#0d1b2a;color:#f3ead7">A busca e as demonstrações do Skillarium precisam do JavaScript ligado. Search and demos need JavaScript turned on.</p></noscript>
 <header class="bar"><div class="wrap">
   <nav class="nav">
+    <a href="#ver" data-pt="Como funciona" data-en="How it works">Como funciona</a>
+    <a href="#novo" data-pt="No app" data-en="In the app">No app</a>
     <a href="#curadoria" data-pt="Curadoria" data-en="Curation" onclick="if(window.SkillariumOrion){event.preventDefault();SkillariumOrion.revelar(function(){document.getElementById('curadoria').scrollIntoView()},document.documentElement.lang.startsWith('en')?'Curation':'Curadoria')}">Curadoria</a>
-    <a href="#ver" data-pt="Veja funcionando" data-en="See it work">Veja funcionando</a>
-    <a href="#dentro" data-pt="Por dentro" data-en="Inside">Por dentro</a>
     <a href="#ia" data-pt="Sua IA (MCP)" data-en="Your AI (MCP)">Sua IA (MCP)</a>
-    <a href="#novo" data-pt="Novidades" data-en="What’s new">Novidades</a>
     <a href="#preco" data-pt="Preço" data-en="Price">Preço</a>
     <a href="lista-de-espera.html" data-pt="Lista de espera" data-en="Waitlist">Lista de espera</a>
   </nav>
@@ -283,16 +294,6 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:16px 28px;align-items:center}
   </div>
 </div></section>
 
-<section id="curadoria"><div class="wrap">
-  <div class="head">
-    <div class="eyebrow" data-pt="Curadoria" data-en="Curation">Curadoria</div>
-    <h2 data-pt="Vasculhamos 1,5 milhão de skills. Você recebe só as que passam." data-en="We scan 1.5 million skills. You only get the ones that pass.">Vasculhamos 1,5 milhão de skills. Você recebe só as que passam.</h2>
-    <p class="lede" data-pt="O Skillarium é uma plataforma de curadoria: todo dia procuramos, conferimos a licença e a segurança, testamos numa tarefa real, classificamos e damos o selo. Toque em cada etapa para ver o que ela corta." data-en="Skillarium is a curation platform: every day we search, check licence and safety, test on a real task, classify and seal. Tap each step to see what it cuts.">O Skillarium é uma plataforma de curadoria: todo dia procuramos, conferimos a licença e a segurança, testamos numa tarefa real, classificamos e damos o selo. Toque em cada etapa para ver o que ela corta.</p>
-  </div>
-  <div id="curadoria-vivo"></div>
-  <script src="orion.js" defer></script><script src="curadoria.js" defer></script>
-</div></section>
-
 <section id="ver"><div class="wrap">
   <div class="head">
     <div class="eyebrow" data-pt="Veja funcionando" data-en="See it work">Veja funcionando</div>
@@ -312,6 +313,22 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:16px 28px;align-items:center}
     </div>
     <div class="chat" id="chat" aria-live="polite"></div>
   </div>
+</div></section>
+
+<style>#novo .item{align-content:start}#novo .item h3{display:flex;align-items:center;gap:10px;margin:0;min-height:34px}</style>
+<section id="novo"><div class="wrap">
+  <div class="head">
+    <div class="eyebrow" data-pt="Novo no app" data-en="New in the app">Novo no app</div>
+    <h2 data-pt="Agora o app também te guia." data-en="Now the app guides you too.">Agora o app também te guia.</h2>
+    <p class="lede" data-pt="Três jeitos novos de achar o que serve para o seu trabalho. Experimente aqui: escolha a sua profissão." data-en="Three new ways to find what fits your work. Try it here: pick your profession.">Três jeitos novos de achar o que serve para o seu trabalho. Experimente aqui: escolha a sua profissão.</p>
+  </div>
+  <div id="novo-vivo"><div class="grid">
+    <div class="item"><h3 data-pt="Berçário de Skills" data-en="Skill Nursery">Berçário de Skills</h3><p class="muted" data-pt="Diga a sua profissão (são 169 na lista) e veja a equipe do Skillarium buscar, provar e entregar as skills testadas para ela, como constelações que se acendem. Toque nos robôs, no código e nas estrelas para saber o que cada um faz." data-en="Tell it your profession (169 on the list) and watch the Skillarium team find, prove and deliver the tested skills for it, like constellations lighting up. Tap the robots, the code and the stars to see what each one does.">Diga a sua profissão (são 169 na lista) e veja a equipe do Skillarium buscar, provar e entregar as skills testadas para ela, como constelações que se acendem. Toque nos robôs, no código e nas estrelas para saber o que cada um faz.</p></div>
+    <div class="item"><h3 data-pt="Arsenal" data-en="Arsenal">Arsenal</h3><p class="muted" data-pt="Skills, prompts, comandos, conectores e repositórios num lugar só. O que vem de fora é revisado e refeito com o nosso protocolo; você só copia, ou pede numa frase: “Skillarium, me dê o pacote…”." data-en="Skills, prompts, commands, connectors and repositories in one place. Anything from outside is reviewed and remade with our protocol; you just copy, or ask in one sentence: “Skillarium, give me the … pack”.">Skills, prompts, comandos, conectores e repositórios num lugar só. O que vem de fora é revisado e refeito com o nosso protocolo; você só copia, ou pede numa frase: “Skillarium, me dê o pacote…”.</p></div>
+    <div class="item"><h3 data-pt="Top 40, só testadas" data-en="Top 40, tested only">Top 40, só testadas</h3><p class="muted" data-pt="As 40 skills para começar rápido agora vêm só das testadas, com selo para as três primeiras." data-en="The 40 quick-start skills now come only from tested ones, with a seal for the top three.">As 40 skills para começar rápido agora vêm só das testadas, com selo para as três primeiras.</p></div>
+  </div></div>
+  <script src="novidades-dados.js" defer></script><script src="novidades.js" defer></script>
+  <div class="mv-abrir"><a class="btn primary" href="lista-de-espera.html" data-pt="Quero entrar na lista de espera" data-en="Join the waitlist">Quero entrar na lista de espera</a><span class="muted" data-pt="Os 400 primeiros pagam uma vez e ficam para sempre." data-en="The first 400 pay once and keep it forever.">Os 400 primeiros pagam uma vez e ficam para sempre.</span></div>
 </div></section>
 
 <section id="dentro"><div class="wrap">
@@ -347,17 +364,17 @@ Memorando de 1 página.</button>
   </div>
 </div></section>
 
-<section id="selo"><div class="wrap">
+<section id="curadoria"><div class="wrap">
   <div class="head">
-    <div class="eyebrow" data-pt="O selo" data-en="The seal">O selo</div>
-    <h2 data-pt="Só entra o que passou pelas três portas." data-en="Only what passes all three gates gets in.">Só entra o que passou pelas três portas.</h2>
-    <p class="lede" data-pt="Na internet há milhares de skills, e muitas são cascas vazias. Nós testamos cada uma antes de ela entrar. Só chega até você a que passa." data-en="There are thousands of skills online, and many are empty shells. We test every one before it gets in. Only what passes reaches you.">Na internet há milhares de skills, e muitas são cascas vazias. Nós testamos cada uma antes de ela entrar. Só chega até você a que passa.</p>
+    <div class="eyebrow" data-pt="Curadoria" data-en="Curation">Curadoria</div>
+    <h2 data-pt="Vasculhamos 1,5 milhão de skills. Você recebe só as que passam." data-en="We scan 1.5 million skills. You only get the ones that pass.">Vasculhamos 1,5 milhão de skills. Você recebe só as que passam.</h2>
+    <p class="lede" data-pt="O Skillarium é uma plataforma de curadoria: todo dia procuramos, conferimos a licença e a segurança, testamos numa tarefa real, classificamos e damos o selo. Toque em cada etapa para ver o que ela corta." data-en="Skillarium is a curation platform: every day we search, check licence and safety, test on a real task, classify and seal. Tap each step to see what it cuts.">O Skillarium é uma plataforma de curadoria: todo dia procuramos, conferimos a licença e a segurança, testamos numa tarefa real, classificamos e damos o selo. Toque em cada etapa para ver o que ela corta.</p>
   </div>
-  <div class="gates">
-    <div class="gate panel"><span class="n">I</span><h3 data-pt="Origem" data-en="Origin">Origem</h3><p class="muted" data-pt="Licença que permite uso comercial e crédito ao autor." data-en="A licence that allows commercial use, and credit to the author.">Licença que permite uso comercial e crédito ao autor.</p><span class="state pass" data-pt="✓ conferida" data-en="✓ checked">✓ conferida</span></div>
-    <div class="gate panel"><span class="n">II</span><h3 data-pt="Teste" data-en="Test">Teste</h3><p class="muted" data-pt="A skill roda numa tarefa de exemplo e a resposta é conferida." data-en="The skill runs on a sample task and the answer is checked.">A skill roda numa tarefa de exemplo e a resposta é conferida.</p><span class="state pass" data-pt="✓ testada" data-en="✓ tested">✓ testada</span></div>
-    <div class="gate panel"><span class="n">III</span><h3 data-pt="Especialista" data-en="Expert">Especialista</h3><p class="muted" data-pt="Testadores convidados usam no trabalho e dão o selo às melhores." data-en="Invited testers use it at work and seal the best ones.">Testadores convidados usam no trabalho e dão o selo às melhores.</p><span class="state" data-pt="nas melhores" data-en="on the best">nas melhores</span></div>
-  </div>
+  <div id="curadoria-vivo"></div>
+  <script src="orion.js" defer></script><script src="curadoria.js" defer></script>
+</div></section>
+
+<section id="selo" class="cont"><div class="wrap">
   <!--CURADORIA-->
   <style>.cura{margin-top:14px;padding:clamp(22px,3.5vw,32px);display:grid;gap:16px}.cura h3{margin:0}.cura ul{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr;gap:14px 28px}@media (min-width:700px){.cura ul{grid-template-columns:1fr 1fr}}.cura li{display:grid;gap:4px;min-width:0}.cura li b{font-weight:500}.cura li b::before{content:"✦  ";color:var(--accent)}.cura li span{font-size:15px;line-height:1.5}</style>
   <div class="cura panel">
@@ -367,48 +384,16 @@ Memorando de 1 página.</button>
       <li><b data-pt="Sem cópia disfarçada" data-en="No disguised copies">Sem cópia disfarçada</b><span class="muted" data-pt="Recusamos coletâneas que juntam milhares de skills de outras pessoas e põem a própria licença por cima." data-en="We turn down collections that bundle thousands of other people's skills under their own licence.">Recusamos coletâneas que juntam milhares de skills de outras pessoas e põem a própria licença por cima.</span></li>
       <li><b data-pt="Só texto, conferido" data-en="Just text, checked">Só texto, conferido</b><span class="muted" data-pt="Nada para instalar nem executar. Cada texto é conferido contra instruções escondidas, senhas e chaves." data-en="Nothing to install or run. Every text is checked for hidden instructions, passwords and keys.">Nada para instalar nem executar. Cada texto é conferido contra instruções escondidas, senhas e chaves.</span></li>
       <li><b data-pt="Reprovar também é curadoria" data-en="Rejecting is curation too">Reprovar também é curadoria</b><span class="muted" data-pt="O que fica de fora aparece no Matusalém, com o motivo." data-en="What is left out is shown in Methuselah, with the reason.">O que fica de fora aparece no Matusalém, com o motivo.</span></li>
+    <li><b data-pt="Selo de especialista" data-en="Expert seal">Selo de especialista</b><span class="muted" data-pt="Testadores convidados usam no trabalho de verdade e dão o selo às melhores." data-en="Invited testers use them in real work and give the seal to the best ones.">Testadores convidados usam no trabalho de verdade e dão o selo às melhores.</span></li>
     </ul>
   </div>
   <!--/CURADORIA-->
-  <div class="counter">
-    <div class="count"><b id="st-n">278</b><span data-pt="skills testadas e aprovadas hoje" data-en="skills tested and approved today">skills testadas e aprovadas hoje</span></div>
-    <div class="count"><b id="st-m">400</b><span data-pt="é a meta da estreia" data-en="is the launch goal">é a meta da estreia</span></div>
-    <div class="count"><b>40</b><span data-pt="novas por semana, em média, depois" data-en="new per week on average, after launch">novas por semana, em média, depois</span></div>
-  </div>
-</div></section>
+  </div></section>
 
-<section><div class="wrap">
+<section id="ferramentas" class="cont"><div class="wrap">
   <div class="head">
-    <div class="eyebrow" data-pt="Sempre atual" data-en="Always current">Sempre atual</div>
-    <h2 data-pt="Skills novas toda semana, sem pagar de novo." data-en="New skills every week, no extra charge.">Skills novas toda semana, sem pagar de novo.</h2>
-  </div>
-  <div class="grid">
-    <div class="item"><h3 data-pt="O Farejador" data-en="The Scout">O Farejador</h3><p class="muted" data-pt="Toda semana, o Farejador procura skills novas, confere a licença e manda para teste. Só entra o que passa." data-en="Every week the Scout looks for new skills, checks the licence and sends them for testing. Only what passes gets in.">Toda semana, o Farejador procura skills novas, confere a licença e manda para teste. Só entra o que passa.</p></div>
-    <div class="item"><h3 data-pt="O Matusalém" data-en="Methuselah">O Matusalém</h3><p class="muted" data-pt="A skill que envelhece se aposenta na biblioteca do Matusalém. O app fica sempre atual." data-en="Skills that age retire to the Methuselah library. The app stays current.">A skill que envelhece se aposenta na biblioteca do Matusalém. O app fica sempre atual.</p></div>
-    <div class="item"><h3 data-pt="Seus dados ficam com você" data-en="Your data stays yours">Seus dados ficam com você</h3><p class="muted" data-pt="O app não coleta nada e funciona sem internet." data-en="The app collects nothing and works offline.">O app não coleta nada e funciona sem internet.</p></div>
-  </div>
-</div></section>
-
-<style>#novo .item{align-content:start}#novo .item h3{display:flex;align-items:center;gap:10px;margin:0;min-height:34px}</style>
-<section id="novo"><div class="wrap">
-  <div class="head">
-    <div class="eyebrow" data-pt="Novo no app" data-en="New in the app">Novo no app</div>
-    <h2 data-pt="Agora o app também te guia." data-en="Now the app guides you too.">Agora o app também te guia.</h2>
-    <p class="lede" data-pt="Três jeitos novos de achar o que serve para o seu trabalho. Experimente aqui: escolha a sua profissão." data-en="Three new ways to find what fits your work. Try it here: pick your profession.">Três jeitos novos de achar o que serve para o seu trabalho. Experimente aqui: escolha a sua profissão.</p>
-  </div>
-  <div id="novo-vivo"><div class="grid">
-    <div class="item"><h3 data-pt="Berçário de Skills" data-en="Skill Nursery">Berçário de Skills</h3><p class="muted" data-pt="Diga a sua profissão (são 169 na lista) e veja a equipe do Skillarium buscar, provar e entregar as skills testadas para ela, como constelações que se acendem. Toque nos robôs, no código e nas estrelas para saber o que cada um faz." data-en="Tell it your profession (169 on the list) and watch the Skillarium team find, prove and deliver the tested skills for it, like constellations lighting up. Tap the robots, the code and the stars to see what each one does.">Diga a sua profissão (são 169 na lista) e veja a equipe do Skillarium buscar, provar e entregar as skills testadas para ela, como constelações que se acendem. Toque nos robôs, no código e nas estrelas para saber o que cada um faz.</p></div>
-    <div class="item"><h3 data-pt="Arsenal" data-en="Arsenal">Arsenal</h3><p class="muted" data-pt="Skills, prompts, comandos, conectores e repositórios num lugar só. O que vem de fora é revisado e refeito com o nosso protocolo; você só copia, ou pede numa frase: “Skillarium, me dê o pacote…”." data-en="Skills, prompts, commands, connectors and repositories in one place. Anything from outside is reviewed and remade with our protocol; you just copy, or ask in one sentence: “Skillarium, give me the … pack”.">Skills, prompts, comandos, conectores e repositórios num lugar só. O que vem de fora é revisado e refeito com o nosso protocolo; você só copia, ou pede numa frase: “Skillarium, me dê o pacote…”.</p></div>
-    <div class="item"><h3 data-pt="Top 40, só testadas" data-en="Top 40, tested only">Top 40, só testadas</h3><p class="muted" data-pt="As 40 skills para começar rápido agora vêm só das testadas, com selo para as três primeiras." data-en="The 40 quick-start skills now come only from tested ones, with a seal for the top three.">As 40 skills para começar rápido agora vêm só das testadas, com selo para as três primeiras.</p></div>
-  </div></div>
-  <script src="novidades-dados.js" defer></script><script src="novidades.js" defer></script>
-  <div class="mv-abrir"><a class="btn primary" href="lista-de-espera.html" data-pt="Quero entrar na lista de espera" data-en="Join the waitlist">Quero entrar na lista de espera</a><span class="muted" data-pt="Os 400 primeiros pagam uma vez e ficam para sempre." data-en="The first 400 pay once and keep it forever.">Os 400 primeiros pagam uma vez e ficam para sempre.</span></div>
-</div></section>
-
-<section id="ferramentas"><div class="wrap">
-  <div class="head">
-    <div class="eyebrow" data-pt="Quem trabalha por trás" data-en="Who works behind the scenes">Quem trabalha por trás</div>
-    <h2 data-pt="Cada ferramenta tem o seu traço." data-en="Every tool has its own line.">Cada ferramenta tem o seu traço.</h2>
+    <div class="eyebrow" data-pt="A equipe da curadoria" data-en="The curation team">A equipe da curadoria</div>
+    <h2 data-pt="Quem faz a curadoria, todo dia." data-en="Who curates, every day.">Quem faz a curadoria, todo dia.</h2>
     <p class="lede" data-pt="Sete personagens, um só universo. Toque em um para vê-lo trabalhar." data-en="Seven characters, one universe. Tap one to watch it work.">Sete personagens, um só universo. Toque em um para vê-lo trabalhar.</p>
   </div>
   <div class="fer-grid" id="fer-grid">
@@ -465,6 +450,22 @@ Memorando de 1 página.</button>
   </div>
 </div></section>
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <section id="preco"><div class="wrap">
   <div class="head" style="margin-inline:auto;text-align:center;justify-items:center">
     <div class="eyebrow" data-pt="Preço" data-en="Price">Preço</div>
@@ -482,7 +483,7 @@ Memorando de 1 página.</button>
     <ul class="inclui">
       <li data-pt="Pagamento único, sem assinatura" data-en="One payment, no subscription">Pagamento único, sem assinatura</li>
       <li data-pt="Skills novas toda semana, incluídas" data-en="New skills every week, included">Skills novas toda semana, incluídas</li>
-      <li data-pt="Português e inglês · funciona offline" data-en="English and Portuguese · works offline">Português e inglês · funciona offline</li>
+      <li data-pt="Português e inglês · funciona offline · não coleta seus dados" data-en="English and Portuguese · works offline · collects no data">Português e inglês · funciona offline · não coleta seus dados</li>
     </ul>
     <p style="text-align:center;margin:14px 0 4px"><a class="btn primary" href="lista-de-espera.html" data-pt="Entrar na lista de espera (grátis)" data-en="Join the waitlist (free)">Entrar na lista de espera (grátis)</a></p>
     <p class="muted" style="font-size:14px" data-pt="Licença pessoal. Cada skill foi revisada e testada antes de chegar até você. Quem repassa entrega de graça a própria vantagem — e o amigo de hoje passa a competir com você amanhã, com as ferramentas que você pagou." data-en="Personal licence. Every skill was reviewed and tested before it reached you. Passing it on gives your edge away for free — and today's friend competes with you tomorrow, with the tools you paid for.">Licença pessoal. Cada skill foi revisada e testada antes de chegar até você. Quem repassa entrega de graça a própria vantagem — e o amigo de hoje passa a competir com você amanhã, com as ferramentas que você pagou.</p>
@@ -875,7 +876,7 @@ let salvo=null;try{salvo=localStorage.getItem("lang")}catch(e){}
 setLang(salvo||((navigator.language||"pt").startsWith("pt")?"pt":"en"));
 </script>
 
-<!--VERSAO--><script>window.SKILLARIUM_VERSAO="20261122-115310";</script><!--/VERSAO-->
+<!--VERSAO--><script>window.SKILLARIUM_VERSAO="20261122-170152";</script><!--/VERSAO-->
 <!--FAQ-DADOS-->
 <script>
 // Skillarium — cérebro de respostas (11/nov/2026). Acha, no FAQ, a melhor resposta para uma pergunta escrita do jeito da pessoa,
@@ -1446,4 +1447,5 @@ window.abrirAlquimistaVivo=function(){montar();paused=false;stepping=false;if(!d
 })();
 
 </script>
-<!--/ALQ-VIVO-->
+<!--/ALQ-VIVO--><script>(function(){var f=function(){document.documentElement.classList.toggle("na-abertura",scrollY<innerHeight*0.6)};addEventListener("scroll",f,{passive:true});f()})();</script>
+
