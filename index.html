@@ -257,6 +257,15 @@ header.bar .nav{padding-bottom:10px;row-gap:6px}
 .chat-abrir{transition:opacity .25s ease,transform .25s ease}
 @media (max-width:700px){html.na-abertura .chat-abrir{opacity:0;pointer-events:none;transform:translateY(14px)}}
 @media (prefers-reduced-motion:reduce){.chat-abrir{transition:none}}
+
+/* 22/nov/2026 (dono: "tudo embolado em cima"): nomes do menu nunca quebram; em tela média o menu desce para uma linha própria */
+.nav a{white-space:nowrap}
+@media (min-width:761px) and (max-width:1359px){
+  .bar .wrap{grid-template-columns:auto 1fr auto;row-gap:0}
+  .nav{display:flex;grid-row:2;grid-column:1/-1;justify-content:center;gap:6px 26px;flex-wrap:wrap;padding:0 0 12px}
+  .nav a{padding:6px 2px}
+  .mark{grid-row:1;grid-column:1}.tools{grid-row:1;grid-column:3}
+}
 </style>
 
 <canvas id="ceu" aria-hidden="true"></canvas>
@@ -876,7 +885,7 @@ let salvo=null;try{salvo=localStorage.getItem("lang")}catch(e){}
 setLang(salvo||((navigator.language||"pt").startsWith("pt")?"pt":"en"));
 </script>
 
-<!--VERSAO--><script>window.SKILLARIUM_VERSAO="20261122-170152";</script><!--/VERSAO-->
+<!--VERSAO--><script>window.SKILLARIUM_VERSAO="20261122-170457";</script><!--/VERSAO-->
 <!--FAQ-DADOS-->
 <script>
 // Skillarium — cérebro de respostas (11/nov/2026). Acha, no FAQ, a melhor resposta para uma pergunta escrita do jeito da pessoa,
