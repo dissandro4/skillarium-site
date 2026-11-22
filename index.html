@@ -891,7 +891,7 @@ let salvo=null;try{salvo=localStorage.getItem("lang")}catch(e){}
 setLang(salvo||((navigator.language||"pt").startsWith("pt")?"pt":"en"));
 </script>
 
-<!--VERSAO--><script>window.SKILLARIUM_VERSAO="20261122-225450";</script><!--/VERSAO-->
+<!--VERSAO--><script>window.SKILLARIUM_VERSAO="20261122-230053";</script><!--/VERSAO-->
 <!--FAQ-DADOS-->
 <script>
 // Skillarium — cérebro de respostas (11/nov/2026). Acha, no FAQ, a melhor resposta para uma pergunta escrita do jeito da pessoa,
@@ -1084,10 +1084,14 @@ const FAQ_PUBLICO=[{"cat": ["Começando", "Getting started"], "publicar": true, 
   async function checar() {
     try {
       const r = await fetch(base + 'versao.json?x=' + Date.now(), { cache: 'no-store' }); if (!r.ok) return; const j = await r.json();
-      if (j.v && j.v !== atual) { if (!sessionStorage.getItem('rec-' + j.v)) { sessionStorage.setItem('rec-' + j.v, '1'); recarregar(j.v); } else aviso(j.v); }
+      if (j.v && j.v !== atual) { let ja = false; try { ja = !!sessionStorage.getItem('rec-' + j.v); sessionStorage.setItem('rec-' + j.v, '1'); } catch (e) {} if (!ja) recarregar(j.v); else aviso(j.v); }
     } catch (e) { /* sem internet: segue com a versão que está aqui */ }
   }
-  checar(); document.addEventListener('visibilitychange', () => { if (!document.hidden) checar(); }); setInterval(checar, 300000);
+  checar();   // ao abrir pelo ícone do iPhone, ao voltar ao app, ao restaurar da memória, ao focar e a cada 60 s
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) checar(); });
+  addEventListener('pageshow', (e) => { if (e.persisted) checar(); });
+  addEventListener('focus', checar);
+  setInterval(() => { if (!document.hidden) checar(); }, 60000);
 })();
 
 // Números verdadeiros do site: vêm de status.json (gerado do catálogo a cada execução da tarefa diária). Sem internet ou sem o arquivo, vale o número que já está na página.
