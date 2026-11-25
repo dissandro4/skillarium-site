@@ -1,7 +1,7 @@
 {
- "aprovadas": 286,
+ "aprovadas": 287,
  "meta": 400,
- "faltam": 114,
+ "faltam": 113,
  "porSemana": 40,
  "atualizado": "2026-11-25",
  "porCategoria": {
@@ -11,7 +11,7 @@
   "design": 38,
   "audit": 1,
   "architecture": 2,
-  "curation": 9,
+  "curation": 10,
   "memory": 5,
   "atendimento": 2
  }
