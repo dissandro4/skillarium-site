@@ -59,7 +59,7 @@
   raiz.replaceChildren(caixa);
 
   function desenharAbas() {
-    abas.replaceChildren(...[['bercario', 'Berçário de Skills', 'Skill Nursery'], ['arsenal', 'Arsenal', 'Arsenal'], ['top', 'Top 40', 'Top 40']].map(([k, pt, en]) => {
+    abas.replaceChildren(...[['bercario', 'Berçário de Skills', 'Skill Nursery'], ['arsenal', 'Nebulosa', 'Nebula'], ['top', 'Top 40', 'Top 40']].map(([k, pt, en]) => {
       const b = el('button', null, X(pt, en)); b.type = 'button'; b.setAttribute('role', 'tab');
       b.setAttribute('aria-selected', String(aba === k)); b.onclick = () => { aba = k; render(); };
       return b;
