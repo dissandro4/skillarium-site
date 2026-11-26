@@ -1,14 +1,14 @@
 {
- "aprovadas": 308,
+ "aprovadas": 313,
  "meta": 400,
- "faltam": 92,
+ "faltam": 87,
  "porSemana": 40,
  "atualizado": "2026-11-26",
  "porCategoria": {
   "finance": 71,
   "automation": 52,
-  "commerce": 125,
-  "design": 38,
+  "commerce": 129,
+  "design": 39,
   "audit": 1,
   "architecture": 2,
   "curation": 12,
