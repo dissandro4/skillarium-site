@@ -1,4 +1,4 @@
-// 21/nov/2026 — "Novo no app" interativo: Berçário (profissão → constelação de skills testadas), Arsenal e Top 40.
+// 21/nov/2026 — "Novo no app" interativo: Berçário (profissão → constelação de skills testadas), Nebulosa e Top 40.
 // Dados reais de site/novidades-dados.js (gerado dos arquivos do app). Sem dependências; respeita "Reduzir movimento".
 (function () {
   const D = window.SKILLARIUM_NOVIDADES, raiz = document.getElementById('novo-vivo');
@@ -59,7 +59,7 @@
   raiz.replaceChildren(caixa);
 
   function desenharAbas() {
-    abas.replaceChildren(...[['bercario', 'Berçário de Skills', 'Skill Nursery'], ['arsenal', 'Nebulosa', 'Nebula'], ['top', 'Top 40', 'Top 40']].map(([k, pt, en]) => {
+    abas.replaceChildren(...[['bercario', 'Berçário de Skills', 'Skill Nursery'], ['nebulosa', 'Nebulosa', 'Nebula'], ['top', 'Top 40', 'Top 40']].map(([k, pt, en]) => {
       const b = el('button', null, X(pt, en)); b.type = 'button'; b.setAttribute('role', 'tab');
       b.setAttribute('aria-selected', String(aba === k)); b.onclick = () => { aba = k; render(); };
       return b;
@@ -135,9 +135,9 @@
     return wrap;
   }
 
-  // ---------- Arsenal ----------
-  function arsenal() {
-    const A = D.arsenal, wrap = el('div'); wrap.style.cssText = 'display:grid;gap:12px';
+  // ---------- Nebulosa ----------
+  function nebulosa() {
+    const A = D.nebulosa, wrap = el('div'); wrap.style.cssText = 'display:grid;gap:12px';
     const tipos = [['skills', 'Skills', 'Skills'], ['prompts', 'Prompts', 'Prompts'], ['comandos', 'Comandos', 'Commands'], ['conectores', 'Conectores', 'Connectors'], ['repositorios', 'Repositórios', 'Repositories']];
     const chips = el('div', 'nv-chips'), lista = el('div', 'nv-lista');
     const qtd = (k) => (k === 'skills' ? A.skills : A[k].length);
@@ -175,7 +175,7 @@
 
   function render() {
     limpar(); desenharAbas();
-    corpo.replaceChildren(aba === 'bercario' ? bercario() : aba === 'arsenal' ? arsenal() : top40());
+    corpo.replaceChildren(aba === 'bercario' ? bercario() : aba === 'nebulosa' ? nebulosa() : top40());
   }
   render();
   new MutationObserver(render).observe(document.documentElement, { attributes: true, attributeFilter: ['lang'] });
